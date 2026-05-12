@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#3D2817">
+<title>Myrsini's Studios — Παραδοσιακά Διαμερίσματα στο Χόρτο Πηλίου</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================
+   MYRSINI'S STUDIOS — DESIGN SYSTEM
+   Παραδοσιακό αρχοντικό × σύγχρονη πλοήγηση
+   ============================================ */
+
+:root {
+  /* Χρωματική Παλέτα — Πηλιορείτικο Αρχοντικό */
+  --stone: #8B7355;
+  --stone-light: #A89378;
+  --wood-dark: #3D2817;
+  --wood-warm: #6B4423;
+  --cream: #F5EFE6;
+  --cream-warm: #EBE0CC;
+  --cream-deep: #E0D2B8;
+  --deep-green: #2D4A2B;
+  --aegean: #486B7A;
+  --gold: #B8945F;
+  --gold-light: #D4B274;
+  --ink: #2B2118;
+  --ink-soft: #4A3E30;
+
+  /* Τυπογραφία */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Mulish', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+
+  /* iOS Safe Areas */
+  --safe-top: env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--cream);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding-bottom: var(--safe-bottom);
+}
+
+/* Διακριτική υφή πέτρας στο background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(139, 115, 85, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(184, 148, 95, 0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+a { color: inherit; text-decoration: none; }
+
+/* ============================================
+   ΤΥΠΟΓΡΑΦΙΑ
+   ============================================ */
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--wood-dark);
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); font-weight: 400; }
+h2 { font-size: clamp(2rem, 5vw, 3.25rem); }
+h3 { font-size: clamp(1.5rem, 3.5vw, 2rem); }
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: inline-block;
+}
+
+.lead {
+  font-size: 1.125rem;
+  color: var(--ink-soft);
+  line-height: 1.8;
+}
+
+/* ============================================
+   ΠΛΟΗΓΗΣΗ
+   ============================================ */
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: calc(var(--safe-top) + var(--space-sm)) var(--space-md) var(--space-sm);
+  background: rgba(245, 239, 230, 0.85);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(184, 148, 95, 0.15);
+  transition: padding 0.3s ease;
+}
+
+.nav__container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.nav__logo {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--wood-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav__logo::before {
+  content: '';
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2L4 8v12h5v-7h6v7h5V8z' fill='currentColor'/></svg>") center/contain no-repeat;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2L4 8v12h5v-7h6v7h5V8z' fill='currentColor'/></svg>") center/contain no-repeat;
+}
+
+.nav__links {
+  display: none;
+  gap: var(--space-lg);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.nav__links a {
+  color: var(--ink-soft);
+  transition: color 0.2s;
+  position: relative;
+  padding: 0.25rem 0;
+}
+
+.nav__links a:hover {
+  color: var(--wood-dark);
+}
+
+.nav__lang {
+  display: flex;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.nav__lang button {
+  padding: 0.5rem 0.6rem;
+  color: var(--ink-soft);
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 4px;
+}
+
+.nav__lang button.active {
+  opacity: 1;
+  color: var(--gold);
+}
+
+.nav__cta {
+  display: none;
+  padding: 0.65rem 1.25rem;
+  background: var(--wood-dark);
+  color: var(--cream);
+  border-radius: 2px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.nav__cta:hover { background: var(--ink); }
+
+@media (min-width: 900px) {
+  .nav__links { display: flex; }
+  .nav__cta { display: inline-block; }
+}
+
+/* ============================================
+   HERO
+   ============================================ */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  padding: calc(var(--safe-top) + 6rem) var(--space-md) var(--space-2xl);
+  background:
+    linear-gradient(180deg,
+      rgba(61, 40, 23, 0.5) 0%,
+      rgba(61, 40, 23, 0.3) 50%,
+      rgba(61, 40, 23, 0.7) 100%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'><defs><linearGradient id='sky' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23E8D5B7'/><stop offset='0.6' stop-color='%23D4A574'/><stop offset='1' stop-color='%23B8845C'/></linearGradient><linearGradient id='sea' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23486B7A'/><stop offset='1' stop-color='%232D4A5A'/></linearGradient><linearGradient id='mountain' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%234A5D4F'/><stop offset='1' stop-color='%232D4A2B'/></linearGradient></defs><rect width='1200' height='800' fill='url(%23sky)'/><path d='M0,400 Q200,350 400,380 T800,360 T1200,380 L1200,500 L0,500 Z' fill='url(%23mountain)' opacity='0.8'/><path d='M0,500 L1200,500 L1200,800 L0,800 Z' fill='url(%23sea)'/><circle cx='900' cy='200' r='60' fill='%23F5E6C8' opacity='0.6'/></svg>") center/cover;
+  background-attachment: scroll;
+  color: var(--cream);
+  overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(180deg, transparent, var(--cream));
+  pointer-events: none;
+}
+
+.hero__container {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.hero__eyebrow {
+  color: var(--gold-light);
+  margin-bottom: var(--space-md);
+  opacity: 0;
+  animation: fadeUp 1s ease 0.2s forwards;
+}
+
+.hero__title {
+  color: var(--cream);
+  font-weight: 400;
+  margin-bottom: var(--space-md);
+  max-width: 16ch;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.4s forwards;
+}
+
+.hero__title em {
+  font-style: italic;
+  color: var(--gold-light);
+  font-weight: 500;
+}
+
+.hero__subtitle {
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  font-weight: 300;
+  max-width: 40ch;
+  line-height: 1.6;
+  margin-bottom: var(--space-lg);
+  color: rgba(245, 239, 230, 0.92);
+  opacity: 0;
+  animation: fadeUp 1s ease 0.6s forwards;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  opacity: 0;
+  animation: fadeUp 1s ease 0.8s forwards;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: all 0.25s ease;
+  min-height: 48px;
+}
+
+.btn--primary {
+  background: var(--gold);
+  color: var(--wood-dark);
+  border: 1px solid var(--gold);
+}
+
+.btn--primary:hover {
+  background: var(--gold-light);
+  transform: translateY(-1px);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--cream);
+  border: 1px solid rgba(245, 239, 230, 0.5);
+}
+
+.btn--ghost:hover {
+  border-color: var(--cream);
+  background: rgba(245, 239, 230, 0.1);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   TRAVEL WIDGET (Πραγματική κίνηση)
+   ============================================ */
+
+.travel-widget {
+  position: relative;
+  z-index: 3;
+  margin: -80px auto 0;
+  max-width: 1100px;
+  background: var(--cream);
+  border: 1px solid var(--cream-deep);
+  box-shadow: 0 30px 80px -20px rgba(61, 40, 23, 0.25);
+  padding: var(--space-lg) var(--space-md);
+}
+
+.travel-widget__header {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.travel-widget__eyebrow {
+  margin-bottom: var(--space-xs);
+}
+
+.travel-widget__title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.travel-widget__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 640px) {
+  .travel-widget__grid { grid-template-columns: 1fr 1fr; }
+}
+
+.travel-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: linear-gradient(135deg, var(--cream-warm), var(--cream));
+  border: 1px solid var(--cream-deep);
+  transition: all 0.3s ease;
+}
+
+.travel-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -10px rgba(184, 148, 95, 0.3);
+}
+
+.travel-card__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--wood-dark);
+  color: var(--gold-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.5rem;
+}
+
+.travel-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.travel-card__from {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: 0.25rem;
+}
+
+.travel-card__duration {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 500;
+  color: var(--wood-dark);
+  line-height: 1;
+}
+
+.travel-card__distance {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-top: 0.25rem;
+}
+
+.travel-widget__meta {
+  display: block;
+  text-align: center;
+  margin-top: var(--space-md);
+  font-size: 0.75rem;
+  color: var(--stone);
+  letter-spacing: 0.05em;
+}
+
+.travel-widget__meta::before {
+  content: '●';
+  color: #4ade80;
+  margin-right: 0.5rem;
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ============================================
+   ENOTITA: ΓΙΑΤΙ ΣΤΟ ΧΟΡΤΟ
+   ============================================ */
+
+.section {
+  padding: var(--space-2xl) var(--space-md);
+  position: relative;
+  z-index: 1;
+}
+
+.section__container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section__header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section__title {
+  margin: var(--space-xs) 0 var(--space-md);
+}
+
+.section__title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.divider {
+  width: 60px;
+  height: 1px;
+  background: var(--gold);
+  margin: var(--space-md) auto;
+  position: relative;
+}
+
+.divider::before, .divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.divider::before { left: -12px; }
+.divider::after { right: -12px; }
+
+.why-content {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--ink-soft);
+}
+
+.why-content p {
+  margin-bottom: var(--space-md);
+}
+
+.why-content p:first-of-type::first-letter {
+  font-family: var(--font-display);
+  font-size: 4.5rem;
+  font-weight: 500;
+  float: left;
+  line-height: 0.85;
+  padding: 0.5rem 0.75rem 0 0;
+  color: var(--gold);
+}
+
+.why-highlight {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.5rem;
+  color: var(--wood-dark);
+  text-align: center;
+  padding: var(--space-lg) var(--space-md);
+  margin: var(--space-lg) 0;
+  border-top: 1px solid var(--cream-deep);
+  border-bottom: 1px solid var(--cream-deep);
+  line-height: 1.5;
+}
+
+/* ============================================
+   ΕΝΟΤΗΤΑ: ΔΙΑΜΕΡΙΣΜΑΤΑ
+   ============================================ */
+
+.stays {
+  background: linear-gradient(180deg, var(--cream), var(--cream-warm));
+}
+
+.stays__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 768px) {
+  .stays__grid { grid-template-columns: 1fr 1fr; }
+}
+
+.stay-card {
+  background: var(--cream);
+  border: 1px solid var(--cream-deep);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stay-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 25px 60px -15px rgba(61, 40, 23, 0.25);
+}
+
+.stay-card__image {
+  aspect-ratio: 4/3;
+  position: relative;
+  overflow: hidden;
+}
+
+.stay-card__image-bg {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.6s ease;
+}
+
+.stay-card:hover .stay-card__image-bg {
+  transform: scale(1.05);
+}
+
+.stay-card__image--archontiko {
+  background: linear-gradient(135deg, #8B7355 0%, #6B4423 50%, #4A3225 100%);
+}
+
+.stay-card__image--archontiko::after {
+  content: 'ΑΡΧΟΝΤΙΚΟ';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  letter-spacing: 0.3em;
+  color: rgba(245, 239, 230, 0.4);
+}
+
+.stay-card__image--thalassino {
+  background: linear-gradient(135deg, #486B7A 0%, #2D4A5A 50%, #1A3340 100%);
+}
+
+.stay-card__image--thalassino::after {
+  content: 'ΘΑΛΑΣΣΙΝΟ';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  letter-spacing: 0.3em;
+  color: rgba(245, 239, 230, 0.4);
+}
+
+.stay-card__body {
+  padding: var(--space-md);
+}
+
+.stay-card__meta {
+  display: flex;
+  gap: var(--space-md);
+  font-size: 0.8rem;
+  color: var(--stone);
+  margin-bottom: var(--space-xs);
+  letter-spacing: 0.05em;
+}
+
+.stay-card__title {
+  margin-bottom: var(--space-xs);
+}
+
+.stay-card__desc {
+  color: var(--ink-soft);
+  margin-bottom: var(--space-md);
+  font-size: 0.95rem;
+}
+
+.stay-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--cream-deep);
+}
+
+.stay-card__price {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--wood-dark);
+}
+
+.stay-card__price small {
+  font-size: 0.75rem;
+  color: var(--stone);
+  font-family: var(--font-body);
+}
+
+.stay-card__link {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 44px;
+  padding: 0.5rem 0;
+}
+
+.stay-card__link::after {
+  content: '→';
+  transition: transform 0.2s;
+}
+
+.stay-card__link:hover::after { transform: translateX(4px); }
+
+/* ============================================
+   WEATHER + EMERGENCY (Split Section)
+   ============================================ */
+
+.utilities {
+  background: var(--wood-dark);
+  color: var(--cream);
+}
+
+.utilities .section__title,
+.utilities h3 { color: var(--cream); }
+
+.utilities .eyebrow { color: var(--gold-light); }
+
+.utilities__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 768px) {
+  .utilities__grid { grid-template-columns: 1fr 1fr; }
+}
+
+.weather-card, .emergency-card {
+  background: rgba(245, 239, 230, 0.05);
+  border: 1px solid rgba(184, 148, 95, 0.2);
+  padding: var(--space-lg);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Weather */
+.weather-card__location {
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-bottom: var(--space-xs);
+}
+
+.weather-card__now {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.weather-card__temp {
+  font-family: var(--font-display);
+  font-size: 4.5rem;
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1;
+}
+
+.weather-card__desc {
+  font-size: 1rem;
+  color: rgba(245, 239, 230, 0.8);
+}
+
+.weather-card__details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(184, 148, 95, 0.2);
+  font-size: 0.85rem;
+}
+
+.weather-card__detail-label {
+  display: block;
+  color: var(--stone-light);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.25rem;
+}
+
+/* Emergency */
+.emergency-list {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: var(--space-md);
+}
+
+.emergency-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem var(--space-sm);
+  background: rgba(245, 239, 230, 0.03);
+  border-left: 2px solid var(--gold);
+  text-decoration: none;
+  color: var(--cream);
+  transition: all 0.2s ease;
+  min-height: 56px;
+}
+
+.emergency-item:hover, .emergency-item:active {
+  background: rgba(184, 148, 95, 0.15);
+  border-left-width: 4px;
+  padding-left: calc(var(--space-sm) - 2px);
+}
+
+.emergency-item__name {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.emergency-item__phone {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--gold-light);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.footer {
+  background: var(--ink);
+  color: var(--cream-warm);
+  padding: var(--space-xl) var(--space-md) var(--space-lg);
+  text-align: center;
+}
+
+.footer__logo {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-style: italic;
+  color: var(--gold-light);
+  margin-bottom: var(--space-xs);
+}
+
+.footer__tagline {
+  font-size: 0.9rem;
+  color: var(--stone-light);
+  margin-bottom: var(--space-md);
+  letter-spacing: 0.05em;
+}
+
+.footer__divider {
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+  margin: var(--space-md) auto;
+}
+
+.footer__copyright {
+  font-size: 0.75rem;
+  color: var(--stone);
+  letter-spacing: 0.05em;
+}
+
+/* ============================================
+   ΠΡΟΣΒΑΣΙΜΟΤΗΤΑ — TOUCH TARGETS
+   ============================================ */
+
+a, button {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+input, textarea, select {
+  font-size: 16px; /* iOS no-zoom */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ============================================
+     ΠΛΟΗΓΗΣΗ
+     ============================================ -->
+<nav class="nav">
+  <div class="nav__container">
+    <a href="#" class="nav__logo">Myrsini's Studios</a>
+    <div class="nav__links">
+      <a href="#why">Γιατί στο Χόρτο</a>
+      <a href="#stays">Διαμονή</a>
+      <a href="#explore">Εξερεύνηση</a>
+      <a href="#utilities">Χρηστικά</a>
+    </div>
+    <div class="nav__lang">
+      <button class="active">EL</button>
+      <button>EN</button>
+      <button>DE</button>
+      <button>FR</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================
+     HERO
+     ============================================ -->
+<section class="hero">
+  <div class="hero__container">
+    <span class="eyebrow hero__eyebrow">Νότιο Πήλιο · Παγασητικός</span>
+    <h1 class="hero__title">Στο Πήλιο που θυμούνται <em>οι παππούδες μας</em></h1>
+    <p class="hero__subtitle">Δύο παραδοσιακά διαμερίσματα στο γαλήνιο λιμανάκι του Χόρτου. Πέτρα, ξύλο καστανιάς, και η θάλασσα στα πέντε λεπτά.</p>
+    <div class="hero__actions">
+      <a href="#stays" class="btn btn--primary">Δείτε τη Διαμονή</a>
+      <a href="#why" class="btn btn--ghost">3D Περιήγηση</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     TRAVEL WIDGET
+     ============================================ -->
+<section class="travel-widget" id="travel-widget">
+  <div class="travel-widget__header">
+    <span class="eyebrow travel-widget__eyebrow">Πρόσβαση σε πραγματικό χρόνο</span>
+    <h2 class="travel-widget__title">Φτάστε στο Χόρτο</h2>
+  </div>
+  <div class="travel-widget__grid">
+    <div class="travel-card" data-origin="volos_port">
+      <div class="travel-card__icon">⚓</div>
+      <div class="travel-card__info">
+        <div class="travel-card__from">Από Λιμάνι Βόλου</div>
+        <div class="travel-card__duration" id="duration-volos">42 λεπτά</div>
+        <div class="travel-card__distance" id="distance-volos">37,2 χλμ</div>
+      </div>
+    </div>
+    <div class="travel-card" data-origin="nea_anchialos">
+      <div class="travel-card__icon">✈</div>
+      <div class="travel-card__info">
+        <div class="travel-card__from">Από Αεροδρόμιο Ν. Αγχιάλου</div>
+        <div class="travel-card__duration" id="duration-anchialos">58 λεπτά</div>
+        <div class="travel-card__distance" id="distance-anchialos">54,8 χλμ</div>
+      </div>
+    </div>
+  </div>
+  <small class="travel-widget__meta">Με πραγματική κίνηση — Ενημέρωση: μόλις τώρα</small>
+</section>
+
+<!-- ============================================
+     ΓΙΑΤΙ ΣΤΟ ΧΟΡΤΟ
+     ============================================ -->
+<section class="section" id="why">
+  <div class="section__container">
+    <div class="section__header">
+      <span class="eyebrow">Η Φιλοσοφία μας</span>
+      <h2 class="section__title">Γιατί στο <em>Χόρτο;</em></h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="why-content">
+      <p>Το Πήλιο έχει γίνει συνώνυμο της Μακρινίτσας με τα τουριστικά λεωφορεία και της Πορταριάς με τις πολυκοσμίες. Το Χόρτο είναι κάτι άλλο. Είναι το Πήλιο που θυμούνται οι παππούδες μας — πριν τα boutique hotels, πριν τα Instagram spots.</p>
+
+      <p>Ένα μικρό λιμανάκι στον Παγασητικό, με δώδεκα ταβέρνες που δουλεύουν επειδή τις αγαπούν οι ντόπιοι, όχι επειδή τις βρήκαν στο TripAdvisor. Με νερά τόσο γαλήνια που τα παιδιά μαθαίνουν εδώ κολύμπι. Με ηλιοβασιλέματα που, όταν τα δεις, καταλαβαίνεις γιατί ο Ιάσονας ξεκίνησε από αυτά τα νερά.</p>
+
+      <div class="why-highlight">«Είμαστε 35 λεπτά από τον Βόλο,<br>αλλά αιώνες μακριά από τη βιασύνη του.»</div>
+
+      <p>Από εδώ ξεκινούν τα παλιά καλντερίμια προς Αργαλαστή και Μηλίνα — μονοπάτια που περπατούσαν για αιώνες οι κάτοικοι του Νοτίου Πηλίου. Σε δέκα λεπτά οδήγηση φτάνεις σε παραλίες χωρίς όνομα στο Google, γιατί ποτέ δεν χρειάστηκε να τις διαφημίσει κανείς.</p>
+
+      <p>Τα δύο μας διαμερίσματα — <em>το Αρχοντικό</em> και <em>το Θαλασσινό</em> — είναι αποκαταστημένα με σεβασμό στην παραδοσιακή αρχιτεκτονική: πελεκητή πέτρα, ταβάνια από καστανιά, χειροποίητα έπιπλα από Πηλιορείτες τεχνίτες. Με όλες τις σύγχρονες ανέσεις, χωρίς να χάνουν τίποτα από τον χαρακτήρα του τόπου.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     ΔΙΑΜΕΡΙΣΜΑΤΑ
+     ============================================ -->
+<section class="section stays" id="stays">
+  <div class="section__container">
+    <div class="section__header">
+      <span class="eyebrow">Η Διαμονή</span>
+      <h2 class="section__title">Δύο Διαμερίσματα,<br><em>Ένας Τόπος</em></h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="stays__grid">
+      <article class="stay-card">
+        <div class="stay-card__image">
+          <div class="stay-card__image-bg stay-card__image--archontiko"></div>
+        </div>
+        <div class="stay-card__body">
+          <div class="stay-card__meta">
+            <span>4 άτομα</span>
+            <span>·</span>
+            <span>65τμ</span>
+            <span>·</span>
+            <span>Θέα βουνό</span>
+          </div>
+          <h3 class="stay-card__title">Το Αρχοντικό</h3>
+          <p class="stay-card__desc">Πέτρινη κατοικία πρώτου ορόφου, με ταβάνια καστανιάς και τζάκι. Ιδανικό για ζευγάρια και μικρές οικογένειες.</p>
+          <div class="stay-card__footer">
+            <div class="stay-card__price">€85 <small>/ νύχτα</small></div>
+            <a href="#" class="stay-card__link">Δείτε &amp; Κρατήστε</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="stay-card">
+        <div class="stay-card__image">
+          <div class="stay-card__image-bg stay-card__image--thalassino"></div>
+        </div>
+        <div class="stay-card__body">
+          <div class="stay-card__meta">
+            <span>2 άτομα</span>
+            <span>·</span>
+            <span>45τμ</span>
+            <span>·</span>
+            <span>Θέα θάλασσα</span>
+          </div>
+          <h3 class="stay-card__title">Το Θαλασσινό</h3>
+          <p class="stay-card__desc">Μικρό studio με μπαλκόνι που βλέπει τον Παγασητικό. Πέτρα, λευκά υφάσματα, και αλμύρα στον αέρα.</p>
+          <div class="stay-card__footer">
+            <div class="stay-card__price">€65 <small>/ νύχτα</small></div>
+            <a href="#" class="stay-card__link">Δείτε &amp; Κρατήστε</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     ΧΡΗΣΤΙΚΑ
+     ============================================ -->
+<section class="section utilities" id="utilities">
+  <div class="section__container">
+    <div class="section__header">
+      <span class="eyebrow">Για την παραμονή σας</span>
+      <h2 class="section__title">Καιρός &amp; <em>Χρηστικά</em></h2>
+      <div class="divider" style="background: var(--gold-light);"></div>
+    </div>
+
+    <div class="utilities__grid">
+      <!-- Καιρός -->
+      <div class="weather-card">
+        <div class="weather-card__location">Τώρα στο Χόρτο</div>
+        <div class="weather-card__now">
+          <div class="weather-card__temp">24°</div>
+          <div class="weather-card__desc">Λιακάδα<br>με νότιο αεράκι</div>
+        </div>
+        <div class="weather-card__details">
+          <div>
+            <span class="weather-card__detail-label">Υγρασία</span>
+            58%
+          </div>
+          <div>
+            <span class="weather-card__detail-label">Άνεμος</span>
+            12 km/h
+          </div>
+          <div>
+            <span class="weather-card__detail-label">Θάλασσα</span>
+            22°
+          </div>
+        </div>
+      </div>
+
+      <!-- Έκτακτη Ανάγκη -->
+      <div class="emergency-card">
+        <h3>Έκτακτη Ανάγκη</h3>
+        <div class="emergency-list">
+          <a href="tel:112" class="emergency-item">
+            <span class="emergency-item__name">Ευρωπαϊκός Αρ. Έκτακτης Ανάγκης</span>
+            <span class="emergency-item__phone">112</span>
+          </a>
+          <a href="tel:166" class="emergency-item">
+            <span class="emergency-item__name">ΕΚΑΒ — Ασθενοφόρο</span>
+            <span class="emergency-item__phone">166</span>
+          </a>
+          <a href="tel:199" class="emergency-item">
+            <span class="emergency-item__name">Πυροσβεστική</span>
+            <span class="emergency-item__phone">199</span>
+          </a>
+          <a href="tel:+302423054222" class="emergency-item">
+            <span class="emergency-item__name">Κέντρο Υγείας Αργαλαστής</span>
+            <span class="emergency-item__phone">24230 54222</span>
+          </a>
+          <a href="tel:+302421076710" class="emergency-item">
+            <span class="emergency-item__name">Λιμεναρχείο Βόλου</span>
+            <span class="emergency-item__phone">24210 76710</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     FOOTER
+     ============================================ -->
+<footer class="footer">
+  <div class="footer__logo">Myrsini's Studios</div>
+  <div class="footer__tagline">Παραδοσιακά Διαμερίσματα · Χόρτο Νοτίου Πηλίου</div>
+  <div class="footer__divider"></div>
+  <div class="footer__copyright">© 2026 Myrsini's Studios · All Rights Reserved</div>
+</footer>
+
+<script>
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', e => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// Language switcher (mock for now)
+document.querySelectorAll('.nav__lang button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav__lang button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+// Mock real-time update simulation
+setInterval(() => {
+  const meta = document.querySelector('.travel-widget__meta');
+  if (meta) meta.innerHTML = 'Με πραγματική κίνηση — Ενημέρωση: μόλις τώρα';
+}, 30000);
+</script>
+
+</body>
+</html>
