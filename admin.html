@@ -225,7 +225,7 @@ input,select,textarea,button{font-family:var(--font);font-size:16px}
         </div>
       </div>
       <div class="card__footer">
-        <button class="btn btn--primary btn--full" id="save-prices-btn" style="min-height:52px;font-size:1rem;cursor:pointer;-webkit-appearance:none;border-radius:8px;" ontouchend="event.preventDefault();savePrices();" onclick="savePrices()">✓ Αποθήκευση Τιμών</button>
+        <button class="btn btn--primary btn--full" id="save-prices-btn" style="min-height:52px;font-size:1rem;cursor:pointer;-webkit-appearance:none;border-radius:8px;" id="save-prices-btn">✓ Αποθήκευση Τιμών</button>
       </div>
     </div>
     <div class="card">
@@ -663,11 +663,24 @@ function updateStats() {
   document.getElementById('s-tp').textContent = '€' + document.getElementById('thal-price').value;
 }
 
+document.addEventListener("DOMContentLoaded",function(){var btn=document.getElementById("save-prices-btn");if(btn){btn.addEventListener("touchend",function(e){e.preventDefault();savePrices();});btn.addEventListener("click",savePrices);}});
 function toast(msg, type = '') {
   const t = document.getElementById('toast');
   t.textContent = msg; t.className = `toast ${type}`; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 }
+</script>
+<script>
+// iOS-safe event binding — runs after all functions are defined
+window.addEventListener('load', function() {
+  function bindBtn(id, fn) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('touchend', function(e) { e.preventDefault(); fn(); });
+    el.addEventListener('click', fn);
+  }
+  bindBtn('save-prices-btn', savePrices);
+});
 </script>
 </body>
 </html>
