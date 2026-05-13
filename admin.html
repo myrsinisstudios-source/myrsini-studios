@@ -8,348 +8,162 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --primary: #1A3D5C;
-  --secondary: #2B7A9E;
-  --accent: #D4892A;
-  --bg: #F0FAFA;
-  --white: #FFFFFF;
-  --border: #B8DEDC;
-  --text: #122533;
-  --text-soft: #2C4A5A;
-  --success: #22C55E;
-  --danger: #EF4444;
-  --warning: #F59E0B;
-  --font: 'Mulish', sans-serif;
-  --font-display: 'Cormorant Garamond', serif;
-  --safe-top: env(safe-area-inset-top);
-  --safe-bottom: env(safe-area-inset-bottom);
+  --primary:#1A3D5C;--secondary:#2B7A9E;--accent:#D4892A;
+  --bg:#F0FAFA;--white:#fff;--border:#B8DEDC;
+  --text:#122533;--text-soft:#2C4A5A;
+  --success:#22C55E;--danger:#EF4444;--warning:#F59E0B;
+  --font:'Mulish',sans-serif;--font-display:'Cormorant Garamond',serif;
+  --safe-top:env(safe-area-inset-top);--safe-bottom:env(safe-area-inset-bottom);
 }
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-body { font-family: var(--font); background: var(--bg); color: var(--text); font-size:16px; padding-bottom:calc(var(--safe-bottom) + 2rem); -webkit-font-smoothing:antialiased; }
-input, select, textarea, button { font-family: var(--font); font-size:16px; }
-
-/* LOGIN */
-.login { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:2rem; background: linear-gradient(135deg, var(--primary), var(--secondary)); }
-.login__box { background: white; padding: 2.5rem 2rem; border-radius: 12px; width:100%; max-width:360px; text-align:center; box-shadow: 0 30px 60px rgba(0,0,0,0.2); }
-.login__logo { font-family: var(--font-display); font-size:1.5rem; font-style:italic; color: var(--primary); margin-bottom: 0.25rem; }
-.login__sub { font-size:0.8rem; color: var(--text-soft); margin-bottom:2rem; letter-spacing:0.1em; text-transform:uppercase; }
-.login__input { width:100%; padding:0.85rem 1rem; border: 1.5px solid var(--border); border-radius:8px; margin-bottom:1rem; color: var(--text); transition: border-color 0.2s; }
-.login__input:focus { outline:none; border-color: var(--secondary); }
-.login__btn { width:100%; padding:0.9rem; background: var(--primary); color:white; border:none; border-radius:8px; font-weight:700; font-size:0.95rem; letter-spacing:0.05em; cursor:pointer; transition:background 0.2s; }
-.login__btn:hover { background: var(--secondary); }
-.login__error { color: var(--danger); font-size:0.85rem; margin-top:0.5rem; display:none; }
-
-/* ADMIN SHELL */
-.admin { display:none; }
-.admin.visible { display:block; }
-
-/* TOPBAR */
-.topbar { position:sticky; top:0; z-index:100; background: var(--primary); color:white; padding: calc(var(--safe-top) + 0.75rem) 1rem 0.75rem; display:flex; align-items:center; justify-content:space-between; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
-.topbar__logo { font-family: var(--font-display); font-style:italic; font-size:1.1rem; }
-.topbar__actions { display:flex; gap:0.5rem; align-items:center; }
-.topbar__badge { background: var(--accent); color:white; font-size:0.65rem; font-weight:700; padding:0.3rem 0.6rem; border-radius:20px; letter-spacing:0.05em; }
-.topbar__logout { background:rgba(255,255,255,0.1); color:white; border:none; padding:0.5rem 0.75rem; border-radius:6px; font-size:0.75rem; cursor:pointer; }
-
-/* TABS */
-.tabs { display:flex; background:white; border-bottom:2px solid var(--border); overflow-x:auto; -webkit-overflow-scrolling:touch; position:sticky; top:52px; z-index:99; }
-.tabs::-webkit-scrollbar { display:none; }
-.tab { flex-shrink:0; padding:0.85rem 1.1rem; font-size:0.8rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color: var(--text-soft); border:none; background:none; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all 0.2s; white-space:nowrap; }
-.tab.active { color: var(--secondary); border-bottom-color: var(--secondary); }
-.tab-icon { margin-right:0.4rem; }
-
-/* PANELS */
-.panel { display:none; padding:1.25rem 1rem; max-width:800px; margin:0 auto; }
-.panel.active { display:block; }
-
-/* CARDS */
-.card { background:white; border-radius:10px; border:1px solid var(--border); margin-bottom:1.25rem; overflow:hidden; }
-.card__header { padding:1rem 1.25rem; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
-.card__title { font-family: var(--font-display); font-size:1.15rem; color: var(--primary); }
-.card__body { padding:1.25rem; }
-.card__footer { padding:0.75rem 1.25rem; background:var(--bg); border-top:1px solid var(--border); display:flex; gap:0.75rem; flex-wrap:wrap; }
-
-/* FORM ELEMENTS */
-.form-group { margin-bottom:1rem; }
-.form-group label { display:block; font-size:0.75rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-soft); margin-bottom:0.4rem; }
-.form-control { width:100%; padding:0.75rem 0.875rem; border:1.5px solid var(--border); border-radius:8px; color:var(--text); transition:border-color 0.2s; background:white; }
-.form-control:focus { outline:none; border-color:var(--secondary); box-shadow:0 0 0 3px rgba(43,122,158,0.1); }
-textarea.form-control { resize:vertical; min-height:80px; }
-.form-row { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
-.form-hint { font-size:0.72rem; color: var(--text-soft); margin-top:0.3rem; opacity:0.8; }
-.form-section { margin-bottom:1.5rem; padding-bottom:1.5rem; border-bottom:1px solid var(--border); }
-.form-section:last-child { border-bottom:none; margin-bottom:0; }
-.form-section__title { font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); margin-bottom:1rem; }
-
-/* BUTTONS */
-.btn { display:inline-flex; align-items:center; gap:0.4rem; padding:0.7rem 1.25rem; border-radius:8px; font-weight:600; font-size:0.85rem; letter-spacing:0.03em; cursor:pointer; border:none; transition:all 0.2s; min-height:44px; }
-.btn--primary { background:var(--secondary); color:white; }
-.btn--primary:hover { background:var(--primary); }
-.btn--success { background:var(--success); color:white; }
-.btn--danger { background:var(--danger); color:white; }
-.btn--ghost { background:transparent; color:var(--secondary); border:1.5px solid var(--secondary); }
-.btn--ghost:hover { background:var(--secondary); color:white; }
-.btn--sm { padding:0.45rem 0.85rem; font-size:0.75rem; min-height:36px; }
-.btn--full { width:100%; justify-content:center; }
-
-/* THEME PICKER */
-.theme-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:0.75rem; }
-.theme-card { border-radius:10px; overflow:hidden; border:2px solid transparent; cursor:pointer; transition:all 0.25s; }
-.theme-card.selected { border-color:var(--secondary); box-shadow:0 0 0 3px rgba(43,122,158,0.2); }
-.theme-card__preview { height:60px; display:flex; }
-.theme-card__bar { flex:1; }
-.theme-card__info { padding:0.6rem; background:white; }
-.theme-card__name { font-size:0.8rem; font-weight:700; color:var(--text); }
-.theme-card__desc { font-size:0.65rem; color:var(--text-soft); }
-
-/* CALENDAR EDITOR */
-.cal-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem; }
-.cal-month { font-family:var(--font-display); font-size:1.1rem; color:var(--primary); }
-.cal-nav-btn { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:0.4rem 0.7rem; cursor:pointer; font-size:0.9rem; min-height:36px; }
-.cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
-.cal-header { text-align:center; font-size:0.65rem; font-weight:700; color:var(--text-soft); padding:4px; }
-.cal-day { aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:0.8rem; border-radius:6px; cursor:pointer; transition:all 0.15s; border:1.5px solid transparent; user-select:none; }
-.cal-day--empty { background:transparent; cursor:default; }
-.cal-day--past { background:var(--bg); color:rgba(18,37,51,0.3); cursor:default; }
-.cal-day--available { background:rgba(34,197,94,0.15); color:var(--text); }
-.cal-day--available:hover { background:rgba(34,197,94,0.3); }
-.cal-day--booked { background:rgba(239,68,68,0.15); color:rgba(239,68,68,0.8); }
-.cal-day--booked:hover { background:rgba(239,68,68,0.3); }
-.cal-legend { display:flex; gap:1rem; font-size:0.72rem; margin-top:0.75rem; }
-.cal-legend-item { display:flex; align-items:center; gap:0.35rem; }
-.cal-dot { width:10px; height:10px; border-radius:50%; }
-.apt-tabs { display:flex; gap:0.5rem; margin-bottom:1rem; }
-.apt-tab { flex:1; padding:0.6rem; text-align:center; border:1.5px solid var(--border); border-radius:8px; cursor:pointer; font-size:0.8rem; font-weight:600; color:var(--text-soft); transition:all 0.2s; }
-.apt-tab.active { border-color:var(--secondary); background:var(--secondary); color:white; }
-
-/* PRICE TABLE */
-.price-table { width:100%; border-collapse:collapse; font-size:0.9rem; }
-.price-table th { text-align:left; padding:0.6rem 0.75rem; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-soft); background:var(--bg); border-bottom:1px solid var(--border); }
-.price-table td { padding:0.6rem 0.75rem; border-bottom:1px solid var(--border); vertical-align:middle; }
-.price-table tr:last-child td { border-bottom:none; }
-.price-input { width:80px; padding:0.4rem 0.6rem; border:1.5px solid var(--border); border-radius:6px; text-align:right; }
-
-/* TOAST */
-.toast { position:fixed; bottom:calc(var(--safe-bottom) + 1rem); left:50%; transform:translateX(-50%) translateY(100px); background:var(--primary); color:white; padding:0.75rem 1.5rem; border-radius:30px; font-size:0.85rem; font-weight:600; z-index:9999; transition:transform 0.3s cubic-bezier(0.4,0,0.2,1); white-space:nowrap; }
-.toast.show { transform:translateX(-50%) translateY(0); }
-.toast.success { background:var(--success); }
-.toast.error { background:var(--danger); }
-
-/* STAT CARDS */
-.stats { display:grid; grid-template-columns:repeat(2,1fr); gap:0.75rem; margin-bottom:1.25rem; }
-.stat { background:white; border-radius:10px; border:1px solid var(--border); padding:1rem; text-align:center; }
-.stat__num { font-family:var(--font-display); font-size:2rem; color:var(--secondary); line-height:1; }
-.stat__label { font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-soft); margin-top:0.25rem; }
-
-/* DOWNLOAD SECTION */
-.download-box { background:linear-gradient(135deg,var(--primary),var(--secondary)); color:white; border-radius:12px; padding:1.5rem; text-align:center; }
-.download-box h3 { font-family:var(--font-display); font-size:1.3rem; margin-bottom:0.5rem; }
-.download-box p { font-size:0.85rem; opacity:0.85; margin-bottom:1.25rem; line-height:1.5; }
-
-@media (min-width: 640px) {
-  .theme-grid { grid-template-columns: repeat(4,1fr); }
-  .stats { grid-template-columns: repeat(4,1fr); }
-}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:16px;padding-bottom:calc(var(--safe-bottom)+2rem);-webkit-font-smoothing:antialiased}
+input,select,textarea,button{font-family:var(--font);font-size:16px}
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:linear-gradient(135deg,var(--primary),var(--secondary))}
+.login__box{background:white;padding:2.5rem 2rem;border-radius:12px;width:100%;max-width:360px;text-align:center;box-shadow:0 30px 60px rgba(0,0,0,0.2)}
+.login__logo{font-family:var(--font-display);font-size:1.5rem;font-style:italic;color:var(--primary);margin-bottom:0.25rem}
+.login__sub{font-size:0.8rem;color:var(--text-soft);margin-bottom:2rem;letter-spacing:0.1em;text-transform:uppercase}
+.login__input{width:100%;padding:0.85rem 1rem;border:1.5px solid var(--border);border-radius:8px;margin-bottom:1rem;color:var(--text)}
+.login__input:focus{outline:none;border-color:var(--secondary)}
+.login__btn{width:100%;padding:0.9rem;background:var(--primary);color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:var(--font);font-size:16px}
+.login__error{color:var(--danger);font-size:0.85rem;margin-top:0.5rem;display:none}
+.admin{display:none}
+.admin.visible{display:block}
+.topbar{position:sticky;top:0;z-index:100;background:var(--primary);color:white;padding:calc(var(--safe-top)+0.75rem) 1rem 0.75rem;display:flex;align-items:center;justify-content:space-between}
+.topbar__logo{font-family:var(--font-display);font-style:italic;font-size:1.1rem}
+.topbar__right{display:flex;gap:0.5rem;align-items:center}
+.topbar__logout{background:rgba(255,255,255,0.1);color:white;border:none;padding:0.5rem 0.75rem;border-radius:6px;font-size:0.75rem;cursor:pointer}
+.tabs{display:flex;background:white;border-bottom:2px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;position:sticky;top:52px;z-index:99}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:0.85rem 1rem;font-size:0.8rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-soft);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all 0.2s}
+.tab.active{color:var(--secondary);border-bottom-color:var(--secondary)}
+.panel{display:none;padding:1.25rem 1rem;max-width:800px;margin:0 auto}
+.panel.active{display:block}
+.card{background:white;border-radius:10px;border:1px solid var(--border);margin-bottom:1.25rem;overflow:hidden}
+.card__header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card__title{font-family:var(--font-display);font-size:1.15rem;color:var(--primary)}
+.card__badge{font-size:0.7rem;background:var(--bg);border:1px solid var(--border);padding:0.25rem 0.6rem;border-radius:20px;color:var(--text-soft)}
+.card__body{padding:1.25rem}
+.card__footer{padding:0.75rem 1.25rem;background:var(--bg);border-top:1px solid var(--border);display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:flex-end}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-soft);margin-bottom:0.4rem}
+.form-control{width:100%;padding:0.75rem 0.875rem;border:1.5px solid var(--border);border-radius:8px;color:var(--text);background:white;transition:border-color 0.2s}
+.form-control:focus{outline:none;border-color:var(--secondary);box-shadow:0 0 0 3px rgba(43,122,158,0.1)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+.btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.7rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;cursor:pointer;border:none;transition:all 0.2s;min-height:44px;font-family:var(--font)}
+.btn--primary{background:var(--secondary);color:white}
+.btn--success{background:var(--success);color:white}
+.btn--danger{background:var(--danger);color:white}
+.btn--ghost{background:transparent;color:var(--secondary);border:1.5px solid var(--secondary)}
+.btn--sm{padding:0.4rem 0.8rem;font-size:0.75rem;min-height:36px}
+.btn--full{width:100%;justify-content:center}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;margin-bottom:1.25rem}
+.stat{background:white;border-radius:10px;border:1px solid var(--border);padding:1rem;text-align:center}
+.stat__num{font-family:var(--font-display);font-size:2rem;color:var(--secondary);line-height:1}
+.stat__label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-soft);margin-top:0.25rem}
+.apt-switch{display:flex;gap:0.5rem;margin-bottom:1rem}
+.apt-btn{flex:1;padding:0.65rem;text-align:center;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:0.85rem;font-weight:600;color:var(--text-soft);background:none;transition:all 0.2s;font-family:var(--font)}
+.apt-btn.active{border-color:var(--secondary);background:var(--secondary);color:white}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem}
+.cal-month{font-family:var(--font-display);font-size:1.2rem;color:var(--primary)}
+.cal-nav-btn{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:0.4rem 0.8rem;cursor:pointer;font-size:1rem;min-height:36px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-header{text-align:center;font-size:0.65rem;font-weight:700;color:var(--text-soft);padding:4px 2px}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:0.8rem;border-radius:6px;cursor:pointer;transition:all 0.15s;border:1.5px solid transparent;user-select:none;font-weight:500}
+.cal-day--empty{background:transparent;cursor:default}
+.cal-day--past{color:rgba(18,37,51,0.25);cursor:not-allowed}
+.cal-day--today{border-color:var(--accent)!important;font-weight:700}
+.cal-day--available{background:rgba(34,197,94,0.12);color:var(--text)}
+.cal-day--available:hover{background:rgba(34,197,94,0.3)}
+.cal-day--blocked{background:rgba(239,68,68,0.15);color:rgba(180,30,30,0.9);text-decoration:line-through}
+.cal-day--blocked:hover{background:rgba(239,68,68,0.3)}
+.cal-legend{display:flex;gap:1.25rem;margin-top:0.75rem;font-size:0.75rem;color:var(--text-soft)}
+.cal-legend-item{display:flex;align-items:center;gap:0.35rem}
+.cal-dot{width:10px;height:10px;border-radius:50%}
+.price-card{background:var(--bg);border-radius:10px;border:1px solid var(--border);padding:1.25rem;margin-bottom:0.75rem}
+.price-card__header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.price-card__name{font-family:var(--font-display);font-size:1.1rem;color:var(--primary)}
+.price-card__current{font-size:1.5rem;font-family:var(--font-display);color:var(--secondary)}
+.price-input-wrap{display:flex;gap:0.5rem;align-items:center}
+.price-input{width:110px;padding:0.6rem 0.75rem;border:1.5px solid var(--border);border-radius:8px;font-size:1.1rem;text-align:right;color:var(--text)}
+.price-input:focus{outline:none;border-color:var(--secondary)}
+.seasonal-row{display:grid;grid-template-columns:1fr 1fr 80px 36px;gap:0.5rem;align-items:end;margin-bottom:0.75rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border)}
+.seasonal-row:last-child{border-bottom:none}
+.seasonal-label{font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-soft);margin-bottom:0.3rem;display:block}
+.seasonal-input{width:100%;padding:0.5rem 0.6rem;border:1.5px solid var(--border);border-radius:6px;font-size:0.875rem;color:var(--text)}
+.bookings-list{display:flex;flex-direction:column;gap:0.75rem}
+.booking-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:1rem}
+.booking-card__header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem}
+.booking-card__name{font-weight:600}
+.booking-card__apt{font-size:0.75rem;color:var(--text-soft)}
+.booking-card__dates{font-size:0.85rem;color:var(--secondary);margin-bottom:0.5rem}
+.booking-card__contact{font-size:0.8rem;color:var(--text-soft)}
+.booking-card__actions{display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap}
+.status-badge{padding:0.25rem 0.6rem;border-radius:20px;font-size:0.7rem;font-weight:700;text-transform:uppercase}
+.status-pending{background:rgba(245,158,11,0.15);color:#B45309}
+.status-confirmed{background:rgba(34,197,94,0.15);color:#166534}
+.status-rejected{background:rgba(239,68,68,0.15);color:#991B1B}
+.weather-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+.toast{position:fixed;bottom:calc(var(--safe-bottom)+1rem);left:50%;transform:translateX(-50%) translateY(100px);background:var(--primary);color:white;padding:0.75rem 1.5rem;border-radius:30px;font-size:0.85rem;font-weight:600;z-index:9999;transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,0.2)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{background:var(--success)}
+.toast.error{background:var(--danger)}
+.loading{display:flex;align-items:center;justify-content:center;padding:2rem;color:var(--text-soft);gap:0.5rem}
+.spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--secondary);border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-state{text-align:center;padding:2rem;color:var(--text-soft);font-size:0.9rem}
+.db-ok{color:var(--success);font-weight:600;font-size:0.95rem}
+.db-err{color:var(--danger);font-size:0.875rem}
+@media(min-width:640px){.stats{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div class="login" id="login-screen">
   <div class="login__box">
     <div class="login__logo">Myrsini's Studios</div>
     <div class="login__sub">Admin Panel</div>
-    <input type="password" class="login__input" id="admin-password" placeholder="Κωδικός πρόσβασης" autocomplete="current-password">
-    <button class="login__btn" onclick="attemptLogin()">Είσοδος →</button>
-    <div class="login__error" id="login-error">Λάθος κωδικός. Δοκιμάστε ξανά.</div>
+    <input type="password" class="login__input" id="admin-pwd" placeholder="Κωδικός πρόσβασης" autocomplete="current-password">
+    <button class="login__btn" onclick="doLogin()">Είσοδος →</button>
+    <div class="login__error" id="login-err">Λάθος κωδικός.</div>
   </div>
 </div>
 
-<!-- ADMIN -->
-<div class="admin" id="admin-panel">
-
+<div class="admin" id="admin">
   <div class="topbar">
     <div class="topbar__logo">Myrsini's Admin</div>
-    <div class="topbar__actions">
-      <span class="topbar__badge" id="unsaved-badge" style="display:none">● Αποθήκευση</span>
-      <button class="topbar__logout" onclick="logout()">Έξοδος</button>
+    <div class="topbar__right">
+      <button class="topbar__logout" onclick="doLogout()">Έξοδος</button>
     </div>
   </div>
 
   <div class="tabs">
-    <button class="tab active" onclick="showTab('dashboard')"><span class="tab-icon">📊</span>Dashboard</button>
-    <button class="tab" onclick="showTab('theme')"><span class="tab-icon">🎨</span>Θέμα</button>
-    <button class="tab" onclick="showTab('apartments')"><span class="tab-icon">🏠</span>Διαμερίσματα</button>
-    <button class="tab" onclick="showTab('calendar')"><span class="tab-icon">📅</span>Ημερολόγιο</button>
-    <button class="tab" onclick="showTab('prices')"><span class="tab-icon">💰</span>Τιμές</button>
-    <button class="tab" onclick="showTab('content')"><span class="tab-icon">✏️</span>Κείμενα</button>
-    <button class="tab" onclick="showTab('contact')"><span class="tab-icon">📞</span>Επικοινωνία</button>
-    <button class="tab" onclick="showTab('export')"><span class="tab-icon">💾</span>Export</button>
+    <button class="tab active" onclick="showTab('dashboard')">📊 Dashboard</button>
+    <button class="tab" onclick="showTab('calendar')">📅 Ημερολόγιο</button>
+    <button class="tab" onclick="showTab('prices')">💰 Τιμές</button>
+    <button class="tab" onclick="showTab('bookings')">📋 Αιτήματα</button>
+    <button class="tab" onclick="showTab('weather')">🌤️ Καιρός</button>
   </div>
 
   <!-- DASHBOARD -->
   <div class="panel active" id="panel-dashboard">
     <div class="stats">
-      <div class="stat"><div class="stat__num" id="stat-booked-arch">0</div><div class="stat__label">Κρατημένες Αρχοντικό</div></div>
-      <div class="stat"><div class="stat__num" id="stat-booked-thal">0</div><div class="stat__label">Κρατημένες Θαλασσινό</div></div>
-      <div class="stat"><div class="stat__num" id="stat-price-arch">€85</div><div class="stat__label">Τιμή Αρχοντικό/νύχτα</div></div>
-      <div class="stat"><div class="stat__num" id="stat-price-thal">€65</div><div class="stat__label">Τιμή Θαλασσινό/νύχτα</div></div>
+      <div class="stat"><div class="stat__num" id="s-arch">—</div><div class="stat__label">Blocked Αρχοντικό</div></div>
+      <div class="stat"><div class="stat__num" id="s-thal">—</div><div class="stat__label">Blocked Θαλασσινό</div></div>
+      <div class="stat"><div class="stat__num" id="s-ap">—</div><div class="stat__label">€ Αρχοντικό</div></div>
+      <div class="stat"><div class="stat__num" id="s-tp">—</div><div class="stat__label">€ Θαλασσινό</div></div>
     </div>
-
+    <div class="card">
+      <div class="card__header"><div class="card__title">Σύνδεση Supabase</div></div>
+      <div class="card__body" id="db-status"><div class="loading"><div class="spinner"></div>Σύνδεση...</div></div>
+    </div>
     <div class="card">
       <div class="card__header"><div class="card__title">Γρήγορες Ενέργειες</div></div>
-      <div class="card__body" style="display:flex; flex-direction:column; gap:0.75rem;">
-        <button class="btn btn--ghost btn--full" onclick="showTab('calendar')">📅 Ενημέρωση Κρατήσεων</button>
+      <div class="card__body" style="display:flex;flex-direction:column;gap:0.75rem">
+        <button class="btn btn--ghost btn--full" onclick="showTab('calendar')">📅 Διαχείριση Ημερολογίου</button>
         <button class="btn btn--ghost btn--full" onclick="showTab('prices')">💰 Αλλαγή Τιμών</button>
-        <button class="btn btn--ghost btn--full" onclick="showTab('theme')">🎨 Αλλαγή Θέματος</button>
-        <button class="btn btn--success btn--full" onclick="showTab('export')">💾 Εξαγωγή Config</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card__header"><div class="card__title">Πώς Λειτουργεί</div></div>
-      <div class="card__body" style="font-size:0.875rem; color:var(--text-soft); line-height:1.7;">
-        <p style="margin-bottom:0.75rem;">1. Κάντε τις αλλαγές σας στις καρτέλες παραπάνω</p>
-        <p style="margin-bottom:0.75rem;">2. Πατήστε <strong>«Εξαγωγή Config»</strong> για να κατεβάσετε το νέο αρχείο</p>
-        <p style="margin-bottom:0.75rem;">3. Ανεβάστε <strong>μόνο το config.js</strong> στο Cloudflare</p>
-        <p>4. Το site ενημερώνεται αυτόματα ✅</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- THEME -->
-  <div class="panel" id="panel-theme">
-    <div class="card">
-      <div class="card__header"><div class="card__title">Παλέτα Χρωμάτων</div></div>
-      <div class="card__body">
-        <div class="theme-grid" id="theme-grid">
-          <div class="theme-card selected" data-theme="turquoise" onclick="selectTheme('turquoise', this)">
-            <div class="theme-card__preview">
-              <div class="theme-card__bar" style="background:#1A3D5C"></div>
-              <div class="theme-card__bar" style="background:#2B7A9E"></div>
-              <div class="theme-card__bar" style="background:#D4892A"></div>
-              <div class="theme-card__bar" style="background:#F0FAFA"></div>
-            </div>
-            <div class="theme-card__info">
-              <div class="theme-card__name">Τιρκουάζ</div>
-              <div class="theme-card__desc">Καλοκαίρι & Θάλασσα</div>
-            </div>
-          </div>
-          <div class="theme-card" data-theme="navy" onclick="selectTheme('navy', this)">
-            <div class="theme-card__preview">
-              <div class="theme-card__bar" style="background:#0D2B45"></div>
-              <div class="theme-card__bar" style="background:#1B4965"></div>
-              <div class="theme-card__bar" style="background:#F4A261"></div>
-              <div class="theme-card__bar" style="background:#E8F4F8"></div>
-            </div>
-            <div class="theme-card__info">
-              <div class="theme-card__name">Navy</div>
-              <div class="theme-card__desc">Premium & Αριστοκρατικό</div>
-            </div>
-          </div>
-          <div class="theme-card" data-theme="sunset" onclick="selectTheme('sunset', this)">
-            <div class="theme-card__preview">
-              <div class="theme-card__bar" style="background:#5C2D0A"></div>
-              <div class="theme-card__bar" style="background:#A0522D"></div>
-              <div class="theme-card__bar" style="background:#E8943A"></div>
-              <div class="theme-card__bar" style="background:#FFF8F0"></div>
-            </div>
-            <div class="theme-card__info">
-              <div class="theme-card__name">Ηλιοβασίλεμα</div>
-              <div class="theme-card__desc">Ζεστό & Ρομαντικό</div>
-            </div>
-          </div>
-          <div class="theme-card" data-theme="forest" onclick="selectTheme('forest', this)">
-            <div class="theme-card__preview">
-              <div class="theme-card__bar" style="background:#1A3D2B"></div>
-              <div class="theme-card__bar" style="background:#2D6A4F"></div>
-              <div class="theme-card__bar" style="background:#B8945F"></div>
-              <div class="theme-card__bar" style="background:#F0F8F4"></div>
-            </div>
-            <div class="theme-card__info">
-              <div class="theme-card__name">Δάσος</div>
-              <div class="theme-card__desc">Πηλιορείτικο & Φυσικό</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card__footer">
-        <button class="btn btn--primary" onclick="saveTheme()">✓ Αποθήκευση Θέματος</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- APARTMENTS -->
-  <div class="panel" id="panel-apartments">
-    <div class="apt-tabs">
-      <div class="apt-tab active" onclick="switchAptTab('archontiko', this)">🏛 Αρχοντικό</div>
-      <div class="apt-tab" onclick="switchAptTab('thalassino', this)">🌊 Θαλασσινό</div>
-    </div>
-
-    <div id="apt-archontiko">
-      <div class="card">
-        <div class="card__header"><div class="card__title">Αρχοντικό — Βασικά</div></div>
-        <div class="card__body">
-          <div class="form-row">
-            <div class="form-group">
-              <label>Τιμή / Νύχτα (€)</label>
-              <input type="number" class="form-control" id="arch-price" value="85" min="1">
-            </div>
-            <div class="form-group">
-              <label>Μέγιστα Άτομα</label>
-              <input type="number" class="form-control" id="arch-guests" value="4" min="1" max="10">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Τετραγωνικά Μέτρα</label>
-            <input type="number" class="form-control" id="arch-sqm" value="65" min="1" style="max-width:120px">
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card__header"><div class="card__title">Περιγραφές</div></div>
-        <div class="card__body">
-          <div class="form-group"><label>🇬🇷 Ελληνικά</label><textarea class="form-control" id="arch-desc-el" rows="3">Πέτρινη κατοικία πρώτου ορόφου, με ταβάνια καστανιάς και τζάκι. Ιδανικό για ζευγάρια και μικρές οικογένειες.</textarea></div>
-          <div class="form-group"><label>🇬🇧 English</label><textarea class="form-control" id="arch-desc-en" rows="3">First-floor stone house with chestnut ceilings and a fireplace. Ideal for couples and small families.</textarea></div>
-          <div class="form-group"><label>🇩🇪 Deutsch</label><textarea class="form-control" id="arch-desc-de" rows="3">Steinhaus im ersten Stock mit Kastaniendecken und Kamin. Ideal für Paare und kleine Familien.</textarea></div>
-          <div class="form-group"><label>🇫🇷 Français</label><textarea class="form-control" id="arch-desc-fr" rows="3">Maison en pierre au premier étage avec plafonds en châtaignier et cheminée.</textarea></div>
-        </div>
-        <div class="card__footer">
-          <button class="btn btn--primary" onclick="saveApartments()">✓ Αποθήκευση</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="apt-thalassino" style="display:none">
-      <div class="card">
-        <div class="card__header"><div class="card__title">Θαλασσινό — Βασικά</div></div>
-        <div class="card__body">
-          <div class="form-row">
-            <div class="form-group">
-              <label>Τιμή / Νύχτα (€)</label>
-              <input type="number" class="form-control" id="thal-price" value="65" min="1">
-            </div>
-            <div class="form-group">
-              <label>Μέγιστα Άτομα</label>
-              <input type="number" class="form-control" id="thal-guests" value="2" min="1" max="10">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Τετραγωνικά Μέτρα</label>
-            <input type="number" class="form-control" id="thal-sqm" value="45" min="1" style="max-width:120px">
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card__header"><div class="card__title">Περιγραφές</div></div>
-        <div class="card__body">
-          <div class="form-group"><label>🇬🇷 Ελληνικά</label><textarea class="form-control" id="thal-desc-el" rows="3">Μικρό studio με μπαλκόνι που βλέπει τον Παγασητικό. Πέτρα, λευκά υφάσματα, και αλμύρα στον αέρα.</textarea></div>
-          <div class="form-group"><label>🇬🇧 English</label><textarea class="form-control" id="thal-desc-en" rows="3">Small studio with a balcony overlooking the Pagasetic Gulf. Stone, white linens, and salt in the air.</textarea></div>
-          <div class="form-group"><label>🇩🇪 Deutsch</label><textarea class="form-control" id="thal-desc-de" rows="3">Kleines Studio mit Balkon und Blick auf den Pagasitischen Golf.</textarea></div>
-          <div class="form-group"><label>🇫🇷 Français</label><textarea class="form-control" id="thal-desc-fr" rows="3">Petit studio avec balcon donnant sur le golfe Pagasétique.</textarea></div>
-        </div>
-        <div class="card__footer">
-          <button class="btn btn--primary" onclick="saveApartments()">✓ Αποθήκευση</button>
-        </div>
+        <button class="btn btn--ghost btn--full" onclick="showTab('bookings')">📋 Αιτήματα Κράτησης</button>
+        <button class="btn btn--ghost btn--full" onclick="showTab('weather')">🌤️ Ενημέρωση Καιρού</button>
       </div>
     </div>
   </div>
@@ -357,26 +171,26 @@ textarea.form-control { resize:vertical; min-height:80px; }
   <!-- CALENDAR -->
   <div class="panel" id="panel-calendar">
     <div class="card">
-      <div class="card__header"><div class="card__title">Διαθεσιμότητα</div><div style="font-size:0.75rem;color:var(--text-soft)">Πάτα ημέρα για αλλαγή</div></div>
+      <div class="card__header"><div class="card__title">Διαθεσιμότητα</div><div class="card__badge">Πάτα ημέρα για αλλαγή</div></div>
       <div class="card__body">
-        <div class="apt-tabs">
-          <div class="apt-tab active" id="cal-tab-arch" onclick="switchCalTab('archontiko')">🏛 Αρχοντικό</div>
-          <div class="apt-tab" id="cal-tab-thal" onclick="switchCalTab('thalassino')">🌊 Θαλασσινό</div>
+        <div class="apt-switch">
+          <button class="apt-btn active" id="cal-arch-btn" onclick="switchCalApt('archontiko')">🏛 Αρχοντικό</button>
+          <button class="apt-btn" id="cal-thal-btn" onclick="switchCalApt('thalassino')">🌊 Θαλασσινό</button>
         </div>
         <div class="cal-nav">
-          <button class="cal-nav-btn" onclick="prevMonth()">← Πριν</button>
-          <div class="cal-month" id="cal-month-label">Μάιος 2026</div>
-          <button class="cal-nav-btn" onclick="nextMonth()">Μετά →</button>
+          <button class="cal-nav-btn" onclick="calPrev()">←</button>
+          <div class="cal-month" id="cal-month"></div>
+          <button class="cal-nav-btn" onclick="calNext()">→</button>
         </div>
         <div class="cal-grid" id="cal-grid"></div>
         <div class="cal-legend">
           <div class="cal-legend-item"><div class="cal-dot" style="background:rgba(34,197,94,0.4)"></div>Διαθέσιμο</div>
-          <div class="cal-legend-item"><div class="cal-dot" style="background:rgba(239,68,68,0.4)"></div>Κρατημένο</div>
+          <div class="cal-legend-item"><div class="cal-dot" style="background:rgba(239,68,68,0.4)"></div>Blocked</div>
         </div>
-        <div class="form-hint" style="margin-top:0.75rem">Κρατημένες ημέρες: <span id="booked-count" style="font-weight:700;color:var(--danger)">0</span></div>
+        <div style="font-size:0.8rem;color:var(--danger);font-weight:600;margin-top:0.5rem" id="blocked-count"></div>
       </div>
       <div class="card__footer">
-        <button class="btn btn--danger btn--sm" onclick="clearAllBooked()">✕ Καθαρισμός όλων</button>
+        <button class="btn btn--danger btn--sm" onclick="clearMonth()">✕ Καθαρισμός μήνα</button>
         <button class="btn btn--primary" onclick="saveCalendar()">✓ Αποθήκευση</button>
       </div>
     </div>
@@ -387,576 +201,457 @@ textarea.form-control { resize:vertical; min-height:80px; }
     <div class="card">
       <div class="card__header"><div class="card__title">Βασικές Τιμές</div></div>
       <div class="card__body">
-        <table class="price-table">
-          <tr><th>Διαμέρισμα</th><th>Τιμή Βάσης</th></tr>
-          <tr><td>🏛 Αρχοντικό</td><td>€ <input type="number" class="price-input form-control" id="base-price-arch" value="85" min="1"></td></tr>
-          <tr><td>🌊 Θαλασσινό</td><td>€ <input type="number" class="price-input form-control" id="base-price-thal" value="65" min="1"></td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card__header"><div class="card__title">Εποχικές Τιμές</div><div style="font-size:0.75rem;color:var(--text-soft)">Αρχοντικό</div></div>
-      <div class="card__body">
-        <div id="seasonal-arch"></div>
-        <button class="btn btn--ghost btn--sm" onclick="addSeasonal('arch')" style="margin-top:0.75rem">+ Προσθήκη Περιόδου</button>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card__header"><div class="card__title">Εποχικές Τιμές</div><div style="font-size:0.75rem;color:var(--text-soft)">Θαλασσινό</div></div>
-      <div class="card__body">
-        <div id="seasonal-thal"></div>
-        <button class="btn btn--ghost btn--sm" onclick="addSeasonal('thal')" style="margin-top:0.75rem">+ Προσθήκη Περιόδου</button>
+        <div class="price-card">
+          <div class="price-card__header">
+            <div class="price-card__name">🏛 Αρχοντικό</div>
+            <div class="price-card__current" id="arch-disp">€85</div>
+          </div>
+          <div class="price-input-wrap">
+            <span style="font-size:1.2rem;color:var(--text-soft)">€</span>
+            <input type="number" class="price-input" id="arch-price" value="85" min="1" oninput="document.getElementById('arch-disp').textContent='€'+this.value">
+            <span style="color:var(--text-soft);font-size:0.8rem">/νύχτα</span>
+          </div>
+        </div>
+        <div class="price-card">
+          <div class="price-card__header">
+            <div class="price-card__name">🌊 Θαλασσινό</div>
+            <div class="price-card__current" id="thal-disp">€65</div>
+          </div>
+          <div class="price-input-wrap">
+            <span style="font-size:1.2rem;color:var(--text-soft)">€</span>
+            <input type="number" class="price-input" id="thal-price" value="65" min="1" oninput="document.getElementById('thal-disp').textContent='€'+this.value">
+            <span style="color:var(--text-soft);font-size:0.8rem">/νύχτα</span>
+          </div>
+        </div>
       </div>
       <div class="card__footer">
         <button class="btn btn--primary" onclick="savePrices()">✓ Αποθήκευση Τιμών</button>
       </div>
     </div>
-  </div>
-
-  <!-- CONTENT -->
-  <div class="panel" id="panel-content">
     <div class="card">
-      <div class="card__header"><div class="card__title">Κείμενο Hero</div></div>
-      <div class="card__body">
-        <div class="form-group"><label>🇬🇷 Tagline</label><input type="text" class="form-control" id="hero-el" value="Στο Πήλιο που θυμούνται οι παππούδες μας"></div>
-        <div class="form-group"><label>🇬🇧 Tagline</label><input type="text" class="form-control" id="hero-en" value="The Pelion your grandparents remember"></div>
-        <div class="form-group"><label>🇩🇪 Tagline</label><input type="text" class="form-control" id="hero-de" value="Das Pilion, an das sich unsere Großeltern erinnern"></div>
-        <div class="form-group"><label>🇫🇷 Tagline</label><input type="text" class="form-control" id="hero-fr" value="Le Pélion que nos grands-parents connaissaient"></div>
-      </div>
-      <div class="card__footer">
-        <button class="btn btn--primary" onclick="saveContent()">✓ Αποθήκευση</button>
-      </div>
+      <div class="card__header"><div class="card__title">Εποχικές — Αρχοντικό</div><button class="btn btn--ghost btn--sm" onclick="addSeasonal('archontiko')">+ Προσθήκη</button></div>
+      <div class="card__body"><div id="seas-archontiko"><div class="empty-state">Δεν υπάρχουν εποχικές τιμές</div></div></div>
     </div>
     <div class="card">
-      <div class="card__header"><div class="card__title">Καιρός (mock)</div></div>
+      <div class="card__header"><div class="card__title">Εποχικές — Θαλασσινό</div><button class="btn btn--ghost btn--sm" onclick="addSeasonal('thalassino')">+ Προσθήκη</button></div>
+      <div class="card__body"><div id="seas-thalassino"><div class="empty-state">Δεν υπάρχουν εποχικές τιμές</div></div></div>
+      <div class="card__footer"><button class="btn btn--primary" onclick="saveSeasonal()">✓ Αποθήκευση Εποχικών</button></div>
+    </div>
+  </div>
+
+  <!-- BOOKINGS -->
+  <div class="panel" id="panel-bookings">
+    <div class="card">
+      <div class="card__header"><div class="card__title">Αιτήματα Κράτησης</div><div class="card__badge" id="bk-count">—</div></div>
+      <div class="card__body"><div id="bk-list"><div class="loading"><div class="spinner"></div>Φόρτωση...</div></div></div>
+    </div>
+  </div>
+
+  <!-- WEATHER -->
+  <div class="panel" id="panel-weather">
+    <div class="card">
+      <div class="card__header"><div class="card__title">Καιρός Χόρτου</div></div>
+      <div class="card__body">
+        <div class="weather-grid">
+          <div class="form-group"><label>🌡️ Θερμ. (°C)</label><input type="number" class="form-control" id="w-temp" value="24"></div>
+          <div class="form-group"><label>🌊 Θάλασσα (°C)</label><input type="number" class="form-control" id="w-sea" value="22"></div>
+          <div class="form-group"><label>💧 Υγρασία (%)</label><input type="number" class="form-control" id="w-hum" value="58"></div>
+          <div class="form-group"><label>💨 Άνεμος (km/h)</label><input type="number" class="form-control" id="w-wind" value="12"></div>
+        </div>
+        <div class="form-group"><label>🇬🇷 Περιγραφή</label><input type="text" class="form-control" id="w-el" value="Λιακάδα με νότιο αεράκι"></div>
+        <div class="form-group"><label>🇬🇧 Description</label><input type="text" class="form-control" id="w-en" value="Sunny with southern breeze"></div>
+        <div class="form-group"><label>🇩🇪 Beschreibung</label><input type="text" class="form-control" id="w-de" value="Sonnig mit Südwind"></div>
+        <div class="form-group"><label>🇫🇷 Description</label><input type="text" class="form-control" id="w-fr" value="Ensoleillé, brise du sud"></div>
+      </div>
+      <div class="card__footer"><button class="btn btn--primary" onclick="saveWeather()">✓ Αποθήκευση Καιρού</button></div>
+    </div>
+    <div class="card">
+      <div class="card__header"><div class="card__title">Χρόνος Ταξιδιού</div></div>
       <div class="card__body">
         <div class="form-row">
-          <div class="form-group"><label>Θερμοκρασία (°C)</label><input type="number" class="form-control" id="weather-temp" value="24"></div>
-          <div class="form-group"><label>Θερμ. Θάλασσας (°C)</label><input type="number" class="form-control" id="weather-sea" value="22"></div>
+          <div class="form-group"><label>⚓ Λιμάνι Βόλου</label><input type="text" class="form-control" id="t-volos" value="42 λεπτά"></div>
+          <div class="form-group"><label>✈️ Ν. Αγχίαλος</label><input type="text" class="form-control" id="t-anch" value="58 λεπτά"></div>
         </div>
-        <div class="form-row">
-          <div class="form-group"><label>Υγρασία (%)</label><input type="number" class="form-control" id="weather-humidity" value="58"></div>
-          <div class="form-group"><label>Άνεμος (km/h)</label><input type="number" class="form-control" id="weather-wind" value="12"></div>
-        </div>
-        <div class="form-group"><label>🇬🇷 Περιγραφή</label><input type="text" class="form-control" id="weather-desc-el" value="Λιακάδα με νότιο αεράκι"></div>
       </div>
-      <div class="card__footer">
-        <button class="btn btn--primary" onclick="saveContent()">✓ Αποθήκευση</button>
-      </div>
+      <div class="card__footer"><button class="btn btn--primary" onclick="saveTravel()">✓ Αποθήκευση</button></div>
     </div>
   </div>
-
-  <!-- CONTACT -->
-  <div class="panel" id="panel-contact">
-    <div class="card">
-      <div class="card__header"><div class="card__title">Στοιχεία Επικοινωνίας</div></div>
-      <div class="card__body">
-        <div class="form-group"><label>WhatsApp (χωρίς + ή κενά)</label><input type="tel" class="form-control" id="contact-whatsapp" value="306944571280"><div class="form-hint">Παράδειγμα: 306912345678</div></div>
-        <div class="form-group"><label>Email</label><input type="email" class="form-control" id="contact-email" value="myrsinisstudios@gmail.com"></div>
-        <div class="form-group"><label>Τηλέφωνο (για εμφάνιση)</label><input type="text" class="form-control" id="contact-phone" value="+30 694 457 1280"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card__header"><div class="card__title">Κωδικός Admin</div></div>
-      <div class="card__body">
-        <div class="form-group"><label>Νέος Κωδικός</label><input type="password" class="form-control" id="new-password" placeholder="Τουλάχιστον 8 χαρακτήρες"></div>
-        <div class="form-group"><label>Επιβεβαίωση</label><input type="password" class="form-control" id="confirm-password" placeholder="Επαναλάβετε τον κωδικό"></div>
-      </div>
-      <div class="card__footer">
-        <button class="btn btn--primary" onclick="saveContact()">✓ Αποθήκευση</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- EXPORT -->
-  <div class="panel" id="panel-export">
-    <div class="download-box">
-      <h3>Εξαγωγή Ρυθμίσεων</h3>
-      <p>Κατεβάστε το νέο αρχείο config.js και ανεβάστε το στο Cloudflare για να εφαρμοστούν οι αλλαγές στο live site.</p>
-      <button class="btn btn--full" style="background:white;color:var(--primary);font-weight:700;" onclick="exportConfig()">
-        ⬇️ Κατέβασμα config.js
-      </button>
-    </div>
-
-    <div class="card" style="margin-top:1.25rem">
-      <div class="card__header"><div class="card__title">Οδηγίες Ενημέρωσης</div></div>
-      <div class="card__body" style="font-size:0.875rem;color:var(--text-soft);line-height:1.8;">
-        <p><strong>1.</strong> Πατήστε «Κατέβασμα config.js»</p>
-        <p><strong>2.</strong> Στο iPhone → Files → Downloads</p>
-        <p><strong>3.</strong> Πηγαίνετε στο <strong>dash.cloudflare.com</strong></p>
-        <p><strong>4.</strong> Workers & Pages → myrsini-studios</p>
-        <p><strong>5.</strong> Upload μόνο το <strong>config.js</strong></p>
-        <p><strong>6.</strong> Deploy ✅ — Ο ιστότοπος ενημερώνεται σε 30 δευτερόλεπτα!</p>
-      </div>
-    </div>
-  </div>
-
 </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast">Αποθηκεύτηκε!</div>
+<div class="toast" id="toast"></div>
 
 <script>
+const SB_URL = 'https://ftgaraonxftdgipemnjo.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0Z2FyYW9ueGZ0ZGdpcGVtbmpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NTE1MzgsImV4cCI6MjA5NDIyNzUzOH0.KCLYjNPKpzS6ehnxQKsPgNFxU55BBycqbaMMXehzB-c';
+const ADMIN_PWD = 'myrsini2026';
+
+// Pure fetch-based Supabase client — no library, works on iOS Safari
+async function sbGet(table, params = '') {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' }
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+async function sbPost(table, body) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return true;
+}
+
+async function sbPatch(table, match, body) {
+  const params = Object.entries(match).map(([k,v]) => `${k}=eq.${encodeURIComponent(v)}`).join('&');
+  const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
+    method: 'PATCH',
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return true;
+}
+
+async function sbDelete(table, match) {
+  const params = Object.entries(match).map(([k,v]) => `${k}=eq.${encodeURIComponent(v)}`).join('&');
+  const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
+    method: 'DELETE',
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' }
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return true;
+}
+
+async function sbUpsert(table, body, onConflict) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}?on_conflict=${onConflict}`, {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return true;
+}
+
 // ============================================================
 // STATE
 // ============================================================
-let config = {
-  theme: 'turquoise',
-  apartments: {
-    archontiko: { price: 85, guests: 4, sqm: 65, desc: { el: '', en: '', de: '', fr: '' } },
-    thalassino: { price: 65, guests: 2, sqm: 45, desc: { el: '', en: '', de: '', fr: '' } },
-  },
-  seasonal: { arch: [], thal: [] },
-  booked: { archontiko: [], thalassino: [] },
-  contact: { whatsapp: '306944571280', email: 'myrsinisstudios@gmail.com', phone: '+30 694 457 1280' },
-  weather: { temp: 24, sea: 22, humidity: 58, wind: 12, desc_el: 'Λιακάδα με νότιο αεράκι' },
-  hero: { el: '', en: '', de: '', fr: '' },
-  admin_password: 'myrsini2026',
-};
-
-let calApt = 'archontiko';
-let calYear = new Date().getFullYear();
-let calMonth = new Date().getMonth();
-const MONTHS_EL = ['Ιανουάριος','Φεβρουάριος','Μάρτιος','Απρίλιος','Μάιος','Ιούνιος','Ιούλιος','Αύγουστος','Σεπτέμβριος','Οκτώβριος','Νοέμβριος','Δεκέμβριος'];
-const DAYS_EL = ['Κ','Δ','Τ','Τ','Π','Π','Σ'];
+let calApt = 'archontiko', calYear = new Date().getFullYear(), calMonth = new Date().getMonth();
+let blocked = { archontiko: new Set(), thalassino: new Set() };
+let seasonal = { archontiko: [], thalassino: [] };
+const MONTHS = ['Ιανουάριος','Φεβρουάριος','Μάρτιος','Απρίλιος','Μάιος','Ιούνιος','Ιούλιος','Αύγουστος','Σεπτέμβριος','Οκτώβριος','Νοέμβριος','Δεκέμβριος'];
+const DAYS = ['Κ','Δ','Τ','Τ','Π','Π','Σ'];
 
 // ============================================================
 // AUTH
 // ============================================================
-function attemptLogin() {
-  const pwd = document.getElementById('admin-password').value;
-  if (pwd === config.admin_password || pwd === 'myrsini2026') {
+function doLogin() {
+  if (document.getElementById('admin-pwd').value === ADMIN_PWD) {
     document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('admin-panel').classList.add('visible');
-    loadFromStorage();
-    renderCalendar();
-    updateStats();
+    document.getElementById('admin').classList.add('visible');
+    initAdmin();
   } else {
-    document.getElementById('login-error').style.display = 'block';
-    setTimeout(() => document.getElementById('login-error').style.display = 'none', 3000);
+    const e = document.getElementById('login-err');
+    e.style.display = 'block';
+    setTimeout(() => e.style.display = 'none', 3000);
+  }
+}
+document.getElementById('admin-pwd').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+function doLogout() {
+  if (confirm('Αποσύνδεση;')) {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('admin').classList.remove('visible');
+    document.getElementById('admin-pwd').value = '';
   }
 }
 
-document.getElementById('admin-password').addEventListener('keydown', e => {
-  if (e.key === 'Enter') attemptLogin();
-});
+// ============================================================
+// INIT
+// ============================================================
+async function initAdmin() {
+  await testConn();
+  await Promise.all([loadPrices(), loadBlocked(), loadWeather(), loadSeasonal()]);
+  renderCalendar();
+  updateStats();
+}
 
-function logout() {
-  if (confirm('Αποσύνδεση;')) {
-    document.getElementById('login-screen').style.display = 'flex';
-    document.getElementById('admin-panel').classList.remove('visible');
-    document.getElementById('admin-password').value = '';
+async function testConn() {
+  const el = document.getElementById('db-status');
+  try {
+    await sbGet('prices', 'select=apartment&limit=1');
+    el.innerHTML = '<span class="db-ok">✅ Supabase συνδέθηκε επιτυχώς!</span>';
+  } catch(e) {
+    el.innerHTML = `<span class="db-err">❌ Σφάλμα: ${e.message}</span>`;
   }
 }
 
 // ============================================================
 // TABS
 // ============================================================
-function showTab(name) {
-  document.querySelectorAll('.tab').forEach((t, i) => {
-    const panels = ['dashboard','theme','apartments','calendar','prices','content','contact','export'];
-    t.classList.toggle('active', panels[i] === name);
-  });
+function showTab(n) {
+  const names = ['dashboard','calendar','prices','bookings','weather'];
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', names[i] === n));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('panel-' + name)?.classList.add('active');
-  if (name === 'calendar') renderCalendar();
-}
-
-function switchAptTab(apt, el) {
-  document.querySelectorAll('.apt-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('apt-archontiko').style.display = apt === 'archontiko' ? 'block' : 'none';
-  document.getElementById('apt-thalassino').style.display = apt === 'thalassino' ? 'block' : 'none';
-}
-
-function switchCalTab(apt) {
-  calApt = apt;
-  document.getElementById('cal-tab-arch').classList.toggle('active', apt === 'archontiko');
-  document.getElementById('cal-tab-thal').classList.toggle('active', apt === 'thalassino');
-  renderCalendar();
-}
-
-// ============================================================
-// THEME
-// ============================================================
-function selectTheme(name, el) {
-  document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  config.theme = name;
-  markUnsaved();
-}
-
-function saveTheme() {
-  saveToStorage();
-  showToast('✓ Θέμα αποθηκεύτηκε!', 'success');
+  document.getElementById('panel-' + n)?.classList.add('active');
+  if (n === 'calendar') renderCalendar();
+  if (n === 'bookings') loadBookings();
 }
 
 // ============================================================
 // CALENDAR
 // ============================================================
+async function loadBlocked() {
+  try {
+    const data = await sbGet('blocked_dates', 'select=apartment,blocked_date');
+    blocked = { archontiko: new Set(), thalassino: new Set() };
+    data.forEach(r => blocked[r.apartment]?.add(r.blocked_date));
+  } catch(e) { toast('❌ ' + e.message, 'error'); }
+}
+
 function renderCalendar() {
   const grid = document.getElementById('cal-grid');
-  const label = document.getElementById('cal-month-label');
-  if (!grid) return;
-
-  label.textContent = `${MONTHS_EL[calMonth]} ${calYear}`;
-
-  const firstDay = new Date(calYear, calMonth, 1).getDay();
-  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  document.getElementById('cal-month').textContent = `${MONTHS[calMonth]} ${calYear}`;
+  const first = new Date(calYear, calMonth, 1).getDay();
+  const days = new Date(calYear, calMonth + 1, 0).getDate();
   const today = new Date();
-  const booked = config.booked[calApt] || [];
-
-  let html = DAYS_EL.map(d => `<div class="cal-header">${d}</div>`).join('');
-  for (let i = 0; i < firstDay; i++) html += `<div class="cal-day cal-day--empty"></div>`;
-
-  for (let d = 1; d <= daysInMonth; d++) {
-    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const dayDate = new Date(calYear, calMonth, d);
-    const isPast = dayDate < today && dayDate.toDateString() !== today.toDateString();
-    const isBooked = booked.includes(dateStr);
-    let cls = 'cal-day';
-    if (isPast) cls += ' cal-day--past';
-    else if (isBooked) cls += ' cal-day--booked';
-    else cls += ' cal-day--available';
-    html += `<div class="${cls}" onclick="toggleDay('${dateStr}', ${isPast})">${d}</div>`;
+  const bl = blocked[calApt];
+  let h = DAYS.map(d => `<div class="cal-header">${d}</div>`).join('');
+  for (let i = 0; i < first; i++) h += `<div class="cal-day cal-day--empty"></div>`;
+  for (let d = 1; d <= days; d++) {
+    const ds = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dd = new Date(calYear, calMonth, d);
+    const past = dd < today && dd.toDateString() !== today.toDateString();
+    const isToday = dd.toDateString() === today.toDateString();
+    let cls = 'cal-day' + (past ? ' cal-day--past' : bl.has(ds) ? ' cal-day--blocked' : ' cal-day--available') + (isToday ? ' cal-day--today' : '');
+    h += `<div class="${cls}" onclick="toggleDay('${ds}',${past})">${d}</div>`;
   }
-
-  grid.innerHTML = html;
-  document.getElementById('booked-count').textContent = booked.length;
+  grid.innerHTML = h;
+  document.getElementById('blocked-count').textContent = `${bl.size} blocked ημέρες συνολικά`;
 }
 
-function toggleDay(dateStr, isPast) {
-  if (isPast) return;
-  const booked = config.booked[calApt];
-  const idx = booked.indexOf(dateStr);
-  if (idx >= 0) booked.splice(idx, 1);
-  else booked.push(dateStr);
-  renderCalendar();
-  markUnsaved();
-}
-
-function prevMonth() {
-  calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; }
+function toggleDay(ds, past) {
+  if (past) return;
+  const bl = blocked[calApt];
+  bl.has(ds) ? bl.delete(ds) : bl.add(ds);
   renderCalendar();
 }
 
-function nextMonth() {
-  calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; }
+function switchCalApt(apt) {
+  calApt = apt;
+  document.getElementById('cal-arch-btn').classList.toggle('active', apt === 'archontiko');
+  document.getElementById('cal-thal-btn').classList.toggle('active', apt === 'thalassino');
   renderCalendar();
 }
+function calPrev() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar(); }
+function calNext() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar(); }
 
-function clearAllBooked() {
-  if (confirm('Καθαρισμός ΟΛΩΝ των κρατήσεων για αυτό το διαμέρισμα;')) {
-    config.booked[calApt] = [];
-    renderCalendar();
-    markUnsaved();
-  }
+async function saveCalendar() {
+  toast('⏳ Αποθήκευση...', '');
+  try {
+    for (const apt of ['archontiko', 'thalassino']) {
+      await sbDelete('blocked_dates', { apartment: apt });
+      const dates = Array.from(blocked[apt]);
+      if (dates.length > 0) {
+        await sbPost('blocked_dates', dates.map(d => ({ apartment: apt, blocked_date: d })));
+      }
+    }
+    updateStats();
+    toast('✅ Ημερολόγιο αποθηκεύτηκε!', 'success');
+  } catch(e) { toast('❌ ' + e.message, 'error'); }
 }
 
-function saveCalendar() {
-  saveToStorage();
-  showToast('✓ Ημερολόγιο αποθηκεύτηκε!', 'success');
+function clearMonth() {
+  if (!confirm('Καθαρισμός όλων;')) return;
+  const prefix = `${calYear}-${String(calMonth+1).padStart(2,'0')}-`;
+  const bl = blocked[calApt];
+  for (const d of [...bl]) { if (d.startsWith(prefix)) bl.delete(d); }
+  renderCalendar();
 }
 
 // ============================================================
 // PRICES
 // ============================================================
-const seasonalData = { arch: [], thal: [] };
+async function loadPrices() {
+  try {
+    const data = await sbGet('prices', 'select=*');
+    data.forEach(r => {
+      if (r.apartment === 'archontiko') {
+        document.getElementById('arch-price').value = r.base_price;
+        document.getElementById('arch-disp').textContent = `€${r.base_price}`;
+      }
+      if (r.apartment === 'thalassino') {
+        document.getElementById('thal-price').value = r.base_price;
+        document.getElementById('thal-disp').textContent = `€${r.base_price}`;
+      }
+    });
+  } catch(e) { console.error(e); }
+}
 
-function addSeasonal(apt) {
-  seasonalData[apt].push({ from: '', to: '', price: 0 });
-  renderSeasonal(apt);
+async function savePrices() {
+  toast('⏳ Αποθήκευση...', '');
+  try {
+    await sbUpsert('prices', [
+      { apartment: 'archontiko', base_price: +document.getElementById('arch-price').value },
+      { apartment: 'thalassino', base_price: +document.getElementById('thal-price').value }
+    ], 'apartment');
+    updateStats();
+    toast('✅ Τιμές αποθηκεύτηκαν!', 'success');
+  } catch(e) { toast('❌ ' + e.message, 'error'); }
+}
+
+async function loadSeasonal() {
+  try {
+    const data = await sbGet('seasonal_prices', 'select=*&order=date_from.asc');
+    seasonal = { archontiko: [], thalassino: [] };
+    data.forEach(r => seasonal[r.apartment]?.push(r));
+    renderSeasonal('archontiko');
+    renderSeasonal('thalassino');
+  } catch(e) { console.error(e); }
 }
 
 function renderSeasonal(apt) {
-  const container = document.getElementById(`seasonal-${apt}`);
-  if (!container) return;
-  if (seasonalData[apt].length === 0) {
-    container.innerHTML = '<p style="font-size:0.85rem;color:var(--text-soft)">Δεν υπάρχουν εποχικές τιμές.</p>';
-    return;
-  }
-  container.innerHTML = seasonalData[apt].map((s, i) => `
-    <div style="display:grid;grid-template-columns:1fr 1fr 80px 36px;gap:0.5rem;align-items:end;margin-bottom:0.75rem;">
-      <div class="form-group" style="margin:0"><label>Από</label><input type="date" class="form-control" value="${s.from}" onchange="seasonalData['${apt}'][${i}].from=this.value;markUnsaved()"></div>
-      <div class="form-group" style="margin:0"><label>Έως</label><input type="date" class="form-control" value="${s.to}" onchange="seasonalData['${apt}'][${i}].to=this.value;markUnsaved()"></div>
-      <div class="form-group" style="margin:0"><label>€/νύχτα</label><input type="number" class="form-control" value="${s.price}" onchange="seasonalData['${apt}'][${i}].price=+this.value;markUnsaved()"></div>
-      <button class="btn btn--danger btn--sm" style="margin-bottom:0" onclick="removeSeasonal('${apt}',${i})">✕</button>
-    </div>
-  `).join('');
+  const c = document.getElementById('seas-' + apt);
+  const items = seasonal[apt];
+  if (!items.length) { c.innerHTML = '<div class="empty-state">Δεν υπάρχουν εποχικές τιμές</div>'; return; }
+  c.innerHTML = items.map((s,i) => `
+    <div class="seasonal-row">
+      <div><span class="seasonal-label">Από</span><input type="date" class="seasonal-input" value="${s.date_from}" onchange="seasonal['${apt}'][${i}].date_from=this.value"></div>
+      <div><span class="seasonal-label">Έως</span><input type="date" class="seasonal-input" value="${s.date_to}" onchange="seasonal['${apt}'][${i}].date_to=this.value"></div>
+      <div><span class="seasonal-label">€</span><input type="number" class="seasonal-input" value="${s.price}" onchange="seasonal['${apt}'][${i}].price=+this.value"></div>
+      <div style="padding-top:1.2rem"><button class="btn btn--danger btn--sm" onclick="delSeasonal('${apt}',${i},'${s.id||''}')">✕</button></div>
+    </div>`).join('');
 }
 
-function removeSeasonal(apt, i) {
-  seasonalData[apt].splice(i, 1);
+function addSeasonal(apt) {
+  seasonal[apt].push({ date_from: '', date_to: '', price: apt === 'archontiko' ? 85 : 65, id: '' });
   renderSeasonal(apt);
-  markUnsaved();
 }
 
-function savePrices() {
-  config.apartments.archontiko.price = +document.getElementById('base-price-arch').value;
-  config.apartments.thalassino.price = +document.getElementById('base-price-thal').value;
-  config.seasonal = JSON.parse(JSON.stringify(seasonalData));
-  saveToStorage();
-  updateStats();
-  showToast('✓ Τιμές αποθηκεύτηκαν!', 'success');
+async function delSeasonal(apt, i, id) {
+  if (id) await sbDelete('seasonal_prices', { id });
+  seasonal[apt].splice(i, 1);
+  renderSeasonal(apt);
+  toast('✅ Διαγράφηκε', 'success');
 }
 
-// ============================================================
-// APARTMENTS
-// ============================================================
-function saveApartments() {
-  config.apartments.archontiko = {
-    price: +document.getElementById('arch-price').value,
-    guests: +document.getElementById('arch-guests').value,
-    sqm: +document.getElementById('arch-sqm').value,
-    desc: {
-      el: document.getElementById('arch-desc-el').value,
-      en: document.getElementById('arch-desc-en').value,
-      de: document.getElementById('arch-desc-de').value,
-      fr: document.getElementById('arch-desc-fr').value,
+async function saveSeasonal() {
+  toast('⏳ Αποθήκευση...', '');
+  try {
+    for (const apt of ['archontiko', 'thalassino']) {
+      for (const s of seasonal[apt]) {
+        if (!s.date_from || !s.date_to) continue;
+        if (s.id) {
+          await sbPatch('seasonal_prices', { id: s.id }, { date_from: s.date_from, date_to: s.date_to, price: s.price });
+        } else {
+          const r = await fetch(`${SB_URL}/rest/v1/seasonal_prices`, {
+            method: 'POST',
+            headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+            body: JSON.stringify({ apartment: apt, date_from: s.date_from, date_to: s.date_to, price: s.price })
+          });
+          const newRow = await r.json();
+          if (newRow[0]?.id) s.id = newRow[0].id;
+        }
+      }
     }
-  };
-  config.apartments.thalassino = {
-    price: +document.getElementById('thal-price').value,
-    guests: +document.getElementById('thal-guests').value,
-    sqm: +document.getElementById('thal-sqm').value,
-    desc: {
-      el: document.getElementById('thal-desc-el').value,
-      en: document.getElementById('thal-desc-en').value,
-      de: document.getElementById('thal-desc-de').value,
-      fr: document.getElementById('thal-desc-fr').value,
-    }
-  };
-  saveToStorage();
-  updateStats();
-  showToast('✓ Διαμερίσματα αποθηκεύτηκαν!', 'success');
+    toast('✅ Εποχικές αποθηκεύτηκαν!', 'success');
+  } catch(e) { toast('❌ ' + e.message, 'error'); }
 }
 
 // ============================================================
-// CONTENT & CONTACT
+// BOOKINGS
 // ============================================================
-function saveContent() {
-  config.hero = {
-    el: document.getElementById('hero-el').value,
-    en: document.getElementById('hero-en').value,
-    de: document.getElementById('hero-de').value,
-    fr: document.getElementById('hero-fr').value,
-  };
-  config.weather = {
-    temp: +document.getElementById('weather-temp').value,
-    sea: +document.getElementById('weather-sea').value,
-    humidity: +document.getElementById('weather-humidity').value,
-    wind: +document.getElementById('weather-wind').value,
-    desc_el: document.getElementById('weather-desc-el').value,
-  };
-  saveToStorage();
-  showToast('✓ Κείμενα αποθηκεύτηκαν!', 'success');
+async function loadBookings() {
+  const el = document.getElementById('bk-list');
+  const cnt = document.getElementById('bk-count');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>Φόρτωση...</div>';
+  try {
+    const data = await sbGet('booking_requests', 'select=*&order=created_at.desc');
+    cnt.textContent = `${data.length} αιτήματα`;
+    if (!data.length) { el.innerHTML = '<div class="empty-state">Δεν υπάρχουν αιτήματα ακόμα</div>'; return; }
+    el.innerHTML = `<div class="bookings-list">${data.map(b => `
+      <div class="booking-card">
+        <div class="booking-card__header">
+          <div><div class="booking-card__name">${b.guest_name}</div>
+          <div class="booking-card__apt">${b.apartment === 'archontiko' ? '🏛 Αρχοντικό' : '🌊 Θαλασσινό'} · ${b.guests} άτομα</div></div>
+          <span class="status-badge status-${b.status}">${b.status==='pending'?'Αναμονή':b.status==='confirmed'?'Επιβεβαιωμένο':'Απορρίφθηκε'}</span>
+        </div>
+        <div class="booking-card__dates">📅 ${b.check_in} → ${b.check_out}</div>
+        <div class="booking-card__contact">📧 ${b.guest_email}${b.guest_phone ? ' · 📞 '+b.guest_phone : ''}</div>
+        ${b.message ? `<div style="margin-top:0.5rem;font-size:0.82rem;color:var(--text-soft);font-style:italic">"${b.message}"</div>` : ''}
+        <div class="booking-card__actions">
+          <button class="btn btn--success btn--sm" onclick="updateBooking('${b.id}','confirmed')">✓ Επιβεβαίωση</button>
+          <button class="btn btn--danger btn--sm" onclick="updateBooking('${b.id}','rejected')">✕ Απόρριψη</button>
+          <a href="mailto:${b.guest_email}" class="btn btn--ghost btn--sm">📧 Email</a>
+          ${b.guest_phone ? `<a href="https://wa.me/${b.guest_phone.replace(/\D/g,'')}" class="btn btn--ghost btn--sm" target="_blank">💬 WA</a>` : ''}
+        </div>
+      </div>`).join('')}</div>`;
+  } catch(e) { el.innerHTML = `<div style="color:var(--danger);padding:1rem">❌ ${e.message}</div>`; }
 }
 
-function saveContact() {
-  const newPwd = document.getElementById('new-password').value;
-  const confirmPwd = document.getElementById('confirm-password').value;
-  if (newPwd && newPwd !== confirmPwd) { showToast('Οι κωδικοί δεν ταιριάζουν!', 'error'); return; }
-  if (newPwd) config.admin_password = newPwd;
-  config.contact = {
-    whatsapp: document.getElementById('contact-whatsapp').value,
-    email: document.getElementById('contact-email').value,
-    phone: document.getElementById('contact-phone').value,
-  };
-  saveToStorage();
-  showToast('✓ Επικοινωνία αποθηκεύτηκε!', 'success');
-}
-
-// ============================================================
-// EXPORT CONFIG.JS
-// ============================================================
-function exportConfig() {
-  const bookedArchStr = config.booked.archontiko.map(d => `    '${d}'`).join(',\n');
-  const bookedThalStr = config.booked.thalassino.map(d => `    '${d}'`).join(',\n');
-
-  const seasonalArchStr = config.seasonal.arch.length
-    ? config.seasonal.arch.map(s => `      { from: '${s.from}', to: '${s.to}', price: ${s.price} }`).join(',\n')
-    : '      // Δεν υπάρχουν εποχικές τιμές';
-  const seasonalThalStr = config.seasonal.thal.length
-    ? config.seasonal.thal.map(s => `      { from: '${s.from}', to: '${s.to}', price: ${s.price} }`).join(',\n')
-    : '      // Δεν υπάρχουν εποχικές τιμές';
-
-  const now = new Date().toLocaleString('el-GR');
-
-  const content = `/**
- * MYRSINI'S STUDIOS — ΑΡΧΕΙΟ ΡΥΘΜΙΣΕΩΝ
- * Τελευταία ενημέρωση: ${now}
- * ΜΗΝ ΑΛΛΑΞΕΤΕ ΤΗ ΔΟΜΗ — μόνο τις τιμές!
- */
-
-const SITE_CONFIG = {
-
-  theme: '${config.theme}',
-
-  custom_colors: {
-    primary:      '#1A3D5C',
-    secondary:    '#2B7A9E',
-    accent:       '#D4892A',
-    accent_light: '#E8B86D',
-    bg:           '#F0FAFA',
-    bg_warm:      '#E2F4F0',
-    text:         '#122533',
-    text_soft:    '#2C4A5A',
-  },
-
-  apartments: {
-    archontiko: {
-      name: { el: 'Το Αρχοντικό', en: 'The Archontiko', de: 'Das Archontiko', fr: "L'Archontiko" },
-      description: {
-        el: '${document.getElementById('arch-desc-el').value.replace(/'/g, "\\'")}',
-        en: '${document.getElementById('arch-desc-en').value.replace(/'/g, "\\'")}',
-        de: '${document.getElementById('arch-desc-de').value.replace(/'/g, "\\'")}',
-        fr: '${document.getElementById('arch-desc-fr').value.replace(/'/g, "\\'")}',
-      },
-      price_per_night: ${config.apartments.archontiko.price},
-      max_guests: ${config.apartments.archontiko.guests},
-      sqm: ${config.apartments.archontiko.sqm},
-      view: { el: 'Θέα βουνό', en: 'Mountain view', de: 'Bergblick', fr: 'Vue montagne' },
-    },
-    thalassino: {
-      name: { el: 'Το Θαλασσινό', en: 'The Thalassino', de: 'Das Thalassino', fr: 'Le Thalassino' },
-      description: {
-        el: '${document.getElementById('thal-desc-el').value.replace(/'/g, "\\'")}',
-        en: '${document.getElementById('thal-desc-en').value.replace(/'/g, "\\'")}',
-        de: '${document.getElementById('thal-desc-de').value.replace(/'/g, "\\'")}',
-        fr: '${document.getElementById('thal-desc-fr').value.replace(/'/g, "\\'")}',
-      },
-      price_per_night: ${config.apartments.thalassino.price},
-      max_guests: ${config.apartments.thalassino.guests},
-      sqm: ${config.apartments.thalassino.sqm},
-      view: { el: 'Θέα θάλασσα', en: 'Sea view', de: 'Meerblick', fr: 'Vue mer' },
-    },
-  },
-
-  seasonal_prices: {
-    archontiko: [
-${seasonalArchStr}
-    ],
-    thalassino: [
-${seasonalThalStr}
-    ],
-  },
-
-  booked_dates: {
-    archontiko: [
-${bookedArchStr}
-    ],
-    thalassino: [
-${bookedThalStr}
-    ],
-  },
-
-  contact: {
-    whatsapp: '${config.contact.whatsapp}',
-    email:    '${config.contact.email}',
-    phone:    '${config.contact.phone}',
-  },
-
-  weather: {
-    location: { el: 'Τώρα στο Χόρτο', en: 'Now in Horto', de: 'Jetzt in Horto', fr: 'En ce moment à Horto' },
-    temp: ${config.weather.temp},
-    sea_temp: ${config.weather.sea},
-    humidity: ${config.weather.humidity},
-    wind_kmh: ${config.weather.wind},
-    description: { el: '${config.weather.desc_el}', en: 'Sunny with southern breeze', de: 'Sonnig mit Südwind', fr: 'Ensoleillé, brise du sud' },
-  },
-
-  travel: {
-    volos_port:    { duration: '42 λεπτά', distance: '37.2 χλμ' },
-    nea_anchialos: { duration: '58 λεπτά', distance: '54.8 χλμ' },
-  },
-
-  admin_password: '${config.admin_password}',
-
-};
-
-const THEMES = {
-  turquoise: { primary:'#1A3D5C', secondary:'#2B7A9E', accent:'#D4892A', accent_light:'#E8B86D', bg:'#F0FAFA', bg_warm:'#E2F4F0', text:'#122533', text_soft:'#2C4A5A' },
-  navy:      { primary:'#0D2B45', secondary:'#1B4965', accent:'#F4A261', accent_light:'#F9C48A', bg:'#E8F4F8', bg_warm:'#D8EEF4', text:'#0A1E2E', text_soft:'#1A3A54' },
-  sunset:    { primary:'#5C2D0A', secondary:'#A0522D', accent:'#E8943A', accent_light:'#F4B870', bg:'#FFF8F0', bg_warm:'#FFF0E0', text:'#3D1A08', text_soft:'#6B3D1E' },
-  forest:    { primary:'#1A3D2B', secondary:'#2D6A4F', accent:'#B8945F', accent_light:'#D4B274', bg:'#F0F8F4', bg_warm:'#E0F0E8', text:'#0F2519', text_soft:'#2A4D38' },
-};
-
-function applyTheme() {
-  const theme = SITE_CONFIG.theme === 'custom' ? SITE_CONFIG.custom_colors : THEMES[SITE_CONFIG.theme] || THEMES.turquoise;
-  const r = document.documentElement;
-  r.style.setProperty('--primary', theme.primary);
-  r.style.setProperty('--secondary', theme.secondary);
-  r.style.setProperty('--gold', theme.accent);
-  r.style.setProperty('--gold-light', theme.accent_light);
-  r.style.setProperty('--cream', theme.bg);
-  r.style.setProperty('--cream-warm', theme.bg_warm);
-  r.style.setProperty('--ink', theme.text);
-  r.style.setProperty('--ink-soft', theme.text_soft);
-  r.style.setProperty('--wood-dark', theme.primary);
-  r.style.setProperty('--wood-warm', theme.secondary);
-  r.style.setProperty('--stone', theme.secondary);
-  r.style.setProperty('--aegean', theme.secondary);
-}
-
-function applyConfig() {
-  applyTheme();
-  if (typeof BOOKED_DATES !== 'undefined') {
-    BOOKED_DATES.archontiko = SITE_CONFIG.booked_dates.archontiko;
-    BOOKED_DATES.thalassino = SITE_CONFIG.booked_dates.thalassino;
-  }
-  document.querySelectorAll('[data-book]').forEach(btn => {
-    const apt = btn.dataset.book;
-    if (SITE_CONFIG.apartments[apt]) btn.dataset.price = SITE_CONFIG.apartments[apt].price_per_night;
-  });
-}
-
-function checkAdminPassword(input) { return input === SITE_CONFIG.admin_password; }
-`;
-
-  const blob = new Blob([content], { type: 'text/javascript' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'config.js';
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('✓ config.js κατεβαίνει!', 'success');
+async function updateBooking(id, status) {
+  try {
+    await sbPatch('booking_requests', { id }, { status });
+    toast(status === 'confirmed' ? '✅ Επιβεβαιώθηκε!' : '❌ Απορρίφθηκε', status === 'confirmed' ? 'success' : 'error');
+    loadBookings();
+  } catch(e) { toast('❌ ' + e.message, 'error'); }
 }
 
 // ============================================================
-// STORAGE & UI HELPERS
+// WEATHER & TRAVEL
 // ============================================================
-function saveToStorage() {
-  localStorage.setItem('myrsini_admin_config', JSON.stringify(config));
-  localStorage.setItem('myrsini_seasonal', JSON.stringify(seasonalData));
-  document.getElementById('unsaved-badge').style.display = 'none';
+async function loadWeather() {
+  try {
+    const data = await sbGet('settings', 'select=*');
+    const m = {};
+    data.forEach(r => m[r.key] = r.value);
+    const map = { 'w-temp':'weather_temp','w-sea':'weather_sea','w-hum':'weather_humidity','w-wind':'weather_wind','w-el':'weather_desc_el','w-en':'weather_desc_en','w-de':'weather_desc_de','w-fr':'weather_desc_fr','t-volos':'travel_volos_duration','t-anch':'travel_anchialos_duration' };
+    for (const [id, key] of Object.entries(map)) { if (m[key]) document.getElementById(id).value = m[key]; }
+  } catch(e) { console.error(e); }
 }
 
-function loadFromStorage() {
-  const saved = localStorage.getItem('myrsini_admin_config');
-  if (saved) config = { ...config, ...JSON.parse(saved) };
-  const savedSeasonal = localStorage.getItem('myrsini_seasonal');
-  if (savedSeasonal) Object.assign(seasonalData, JSON.parse(savedSeasonal));
-  renderSeasonal('arch');
-  renderSeasonal('thal');
+async function saveWeather() {
+  toast('⏳ Αποθήκευση...', '');
+  try {
+    await sbUpsert('settings', [
+      { key:'weather_temp', value: document.getElementById('w-temp').value },
+      { key:'weather_sea', value: document.getElementById('w-sea').value },
+      { key:'weather_humidity', value: document.getElementById('w-hum').value },
+      { key:'weather_wind', value: document.getElementById('w-wind').value },
+      { key:'weather_desc_el', value: document.getElementById('w-el').value },
+      { key:'weather_desc_en', value: document.getElementById('w-en').value },
+      { key:'weather_desc_de', value: document.getElementById('w-de').value },
+      { key:'weather_desc_fr', value: document.getElementById('w-fr').value },
+    ], 'key');
+    toast('✅ Καιρός αποθηκεύτηκε!', 'success');
+  } catch(e) { toast('❌ ' + e.message, 'error'); }
 }
 
-function markUnsaved() {
-  document.getElementById('unsaved-badge').style.display = 'inline-block';
+async function saveTravel() {
+  toast('⏳ Αποθήκευση...', '');
+  try {
+    await sbUpsert('settings', [
+      { key:'travel_volos_duration', value: document.getElementById('t-volos').value },
+      { key:'travel_anchialos_duration', value: document.getElementById('t-anch').value },
+    ], 'key');
+    toast('✅ Αποθηκεύτηκε!', 'success');
+  } catch(e) { toast('❌ ' + e.message, 'error'); }
 }
 
+// ============================================================
+// HELPERS
+// ============================================================
 function updateStats() {
-  document.getElementById('stat-booked-arch').textContent = config.booked.archontiko.length;
-  document.getElementById('stat-booked-thal').textContent = config.booked.thalassino.length;
-  document.getElementById('stat-price-arch').textContent = `€${config.apartments.archontiko.price}`;
-  document.getElementById('stat-price-thal').textContent = `€${config.apartments.thalassino.price}`;
+  document.getElementById('s-arch').textContent = blocked.archontiko.size;
+  document.getElementById('s-thal').textContent = blocked.thalassino.size;
+  document.getElementById('s-ap').textContent = '€' + document.getElementById('arch-price').value;
+  document.getElementById('s-tp').textContent = '€' + document.getElementById('thal-price').value;
 }
 
-function showToast(msg, type = '') {
+function toast(msg, type = '') {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = `toast ${type}`;
-  t.classList.add('show');
+  t.textContent = msg; t.className = `toast ${type}`; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 </script>
