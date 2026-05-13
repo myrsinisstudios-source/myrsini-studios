@@ -423,7 +423,7 @@ function renderCalendar() {
     var past = dd<today && dd.toDateString()!==today.toDateString();
     var isToday = dd.toDateString()===today.toDateString();
     var cls = 'cal-day'+(past?' cal-day--past':bl[ds]?' cal-day--blocked':' cal-day--available')+(isToday?' cal-day--today':'');
-    h += '<div class="'+cls+'" onclick="toggleDay(''+ds+'','+past+')">'+d+'</div>';
+    h += '<div class="'+cls+'" data-date="'+ds+'" data-past="'+past+'" onclick="handleDayClick(this)">'+d+'</div>';
   }
   grid.innerHTML = h;
   var cnt = Object.keys(bl).length;
@@ -431,6 +431,12 @@ function renderCalendar() {
 }
 
 function pad(n) { return n<10?'0'+n:String(n); }
+
+function handleDayClick(el) {
+  var ds = el.getAttribute('data-date');
+  var past = el.getAttribute('data-past') === 'true';
+  toggleDay(ds, past);
+}
 
 function toggleDay(ds, past) {
   if (past) return;
@@ -544,7 +550,7 @@ function renderSeasonal(apt) {
       +'<div><span class="seasonal-label">Από</span><input type="date" class="seasonal-input" value="'+s.date_from+'" data-apt="'+apt+'" data-idx="'+i+'" data-field="date_from" onchange="updateSeasonal(this)"></div>'
       +'<div><span class="seasonal-label">Έως</span><input type="date" class="seasonal-input" value="'+s.date_to+'" data-apt="'+apt+'" data-idx="'+i+'" data-field="date_to" onchange="updateSeasonal(this)"></div>'
       +'<div><span class="seasonal-label">€</span><input type="number" class="seasonal-input" value="'+s.price+'" data-apt="'+apt+'" data-idx="'+i+'" data-field="price" onchange="updateSeasonal(this)"></div>'
-      +'<div style="padding-top:1.2rem"><button class="btn btn--danger btn--sm" onclick="delSeasonal(''+apt+'','+i+',''+s.id+'')">✕</button></div>'
+      +'<div style="padding-top:1.2rem"><button class="btn btn--danger btn--sm" data-apt="'+apt+'" data-idx="'+i+'" data-id="'+(s.id||'')+'" onclick="handleDelSeasonal(this)">✕</button></div>'
       +'</div>';
   }
   c.innerHTML = h;
@@ -558,6 +564,13 @@ function updateSeasonal(el) {
 function addSeasonal(apt) {
   seasonal[apt].push({date_from:'',date_to:'',price:apt==='archontiko'?85:65,id:''});
   renderSeasonal(apt);
+}
+
+function handleDelSeasonal(el) {
+  var apt = el.getAttribute('data-apt');
+  var i = parseInt(el.getAttribute('data-idx'));
+  var id = el.getAttribute('data-id') || '';
+  delSeasonal(apt, i, id);
 }
 
 function delSeasonal(apt, i, id) {
@@ -622,8 +635,8 @@ function loadBookings() {
         +'<div class="booking-card__contact">📧 '+b.guest_email+(b.guest_phone?' · 📞 '+b.guest_phone:'')+'</div>'
         +(b.message?'<div style="margin-top:0.5rem;font-size:0.82rem;color:var(--text-soft);font-style:italic">"'+b.message+'"</div>':'')
         +'<div class="booking-card__actions">'
-        +'<button class="btn btn--success btn--sm" onclick="updateBooking(''+b.id+'','confirmed')">✓ Επιβεβαίωση</button>'
-        +'<button class="btn btn--danger btn--sm" onclick="updateBooking(''+b.id+'','rejected')">✕ Απόρριψη</button>'
+        +'<button class="btn btn--success btn--sm" data-id="'+b.id+'" data-status="confirmed" onclick="handleUpdateBooking(this)">✓ Επιβεβαίωση</button>'
+        +'<button class="btn btn--danger btn--sm" data-id="'+b.id+'" data-status="rejected" onclick="handleUpdateBooking(this)">✕ Απόρριψη</button>'
         +'<a href="mailto:'+b.guest_email+'" class="btn btn--ghost btn--sm">📧 Email</a>'
         +(b.guest_phone?'<a href="https://wa.me/'+b.guest_phone.replace(/\D/g,'')+'" class="btn btn--ghost btn--sm" target="_blank">💬 WA</a>':'')
         +'</div></div>';
@@ -631,6 +644,12 @@ function loadBookings() {
     h += '</div>';
     el.innerHTML = h;
   });
+}
+
+function handleUpdateBooking(el) {
+  var id = el.getAttribute('data-id');
+  var status = el.getAttribute('data-status');
+  updateBooking(id, status);
 }
 
 function updateBooking(id, status) {
