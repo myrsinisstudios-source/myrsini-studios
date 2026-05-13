@@ -118,7 +118,20 @@ input,select,textarea,button{font-family:var(--font);font-size:16px}
 </style>
 </head>
 <body>
-
+<div id="js-test" style="display:none;position:fixed;top:0;left:0;right:0;background:red;color:white;padding:10px;z-index:99999;font-size:14px"></div>
+<script>
+window.onerror = function(msg,src,line,col,err){
+  var d=document.getElementById('js-test');
+  if(d){d.style.display='block';d.textContent='JS ERROR: '+msg+' (line '+line+')';}
+  return true;
+};
+document.getElementById('js-test').style.display='block';
+document.getElementById('js-test').textContent='JS is running...';
+setTimeout(function(){
+  var d=document.getElementById('js-test');
+  if(d) d.style.display='none';
+},2000);
+</script>
 <div class="login" id="login-screen">
   <div class="login__box">
     <div class="login__logo">Myrsini's Studios</div>
