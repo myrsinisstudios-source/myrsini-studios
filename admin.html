@@ -225,7 +225,7 @@ input,select,textarea,button{font-family:var(--font);font-size:16px}
         </div>
       </div>
       <div class="card__footer">
-        <button class="btn btn--primary" onclick="savePrices()">✓ Αποθήκευση Τιμών</button>
+        <button class="btn btn--primary btn--full" id="save-prices-btn" style="min-height:52px;font-size:1rem;cursor:pointer;-webkit-appearance:none;border-radius:8px;" ontouchend="event.preventDefault();savePrices();" onclick="savePrices()">✓ Αποθήκευση Τιμών</button>
       </div>
     </div>
     <div class="card">
@@ -490,12 +490,26 @@ async function loadPrices() {
 }
 
 async function savePrices() {
-  toast('⏳ Αποθήκευση...', '');
+  const archVal = +document.getElementById('arch-price').value;
+  const thalVal = +document.getElementById('thal-price').value;
+  toast('⏳ Αποθήκευση ' + archVal + '/' + thalVal + '...', '');
   try {
-    await sbUpsert('prices', [
-      { apartment: 'archontiko', base_price: +document.getElementById('arch-price').value },
-      { apartment: 'thalassino', base_price: +document.getElementById('thal-price').value }
-    ], 'apartment');
+    // Update archontiko
+    const r1 = await fetch(`${SB_URL}/rest/v1/prices?apartment=eq.archontiko`, {
+      method: 'PATCH',
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ base_price: archVal })
+    });
+    if (!r1.ok) throw new Error('Arch: ' + await r1.text());
+
+    // Update thalassino
+    const r2 = await fetch(`${SB_URL}/rest/v1/prices?apartment=eq.thalassino`, {
+      method: 'PATCH',
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ base_price: thalVal })
+    });
+    if (!r2.ok) throw new Error('Thal: ' + await r2.text());
+
     updateStats();
     toast('✅ Τιμές αποθηκεύτηκαν!', 'success');
   } catch(e) { toast('❌ ' + e.message, 'error'); }
