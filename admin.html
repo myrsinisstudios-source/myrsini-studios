@@ -285,64 +285,41 @@ const SB_URL = 'https://ftgaraonxftdgipemnjo.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0Z2FyYW9ueGZ0ZGdpcGVtbmpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NTE1MzgsImV4cCI6MjA5NDIyNzUzOH0.KCLYjNPKpzS6ehnxQKsPgNFxU55BBycqbaMMXehzB-c';
 const ADMIN_PWD = 'myrsini2026';
 
-// Pure fetch-based Supabase client — no library, works on iOS Safari
-async function sbGet(table, params = '') {
-  const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
-    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' }
-  });
-  if (!r.ok) throw new Error(await r.text());
-  return r.json();
+// XHR-based request — 100% iOS Safari compatible
+function sbRequest(method, table, params, body, cb) {
+  var url = SB_URL + '/rest/v1/' + table + (params ? '?' + params : '');
+  var xhr = new XMLHttpRequest();
+  xhr.open(method, url, true);
+  xhr.setRequestHeader('apikey', SB_KEY);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + SB_KEY);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.setRequestHeader('Prefer', method === 'POST' ? 'return=minimal' : 'return=minimal');
+  xhr.onload = function() {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      var data = null;
+      try { data = xhr.responseText ? JSON.parse(xhr.responseText) : []; } catch(e) { data = []; }
+      cb(null, data);
+    } else {
+      cb(new Error(xhr.responseText || 'HTTP ' + xhr.status), null);
+    }
+  };
+  xhr.onerror = function() { cb(new Error('Network error'), null); };
+  xhr.send(body ? JSON.stringify(body) : null);
 }
 
-async function sbPost(table, body) {
-  const r = await fetch(`${SB_URL}/rest/v1/${table}`, {
-    method: 'POST',
-    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-    body: JSON.stringify(body)
-  });
-  if (!r.ok) throw new Error(await r.text());
-  return true;
-}
-
-async function sbPatch(table, match, body) {
-  const params = Object.entries(match).map(([k,v]) => `${k}=eq.${encodeURIComponent(v)}`).join('&');
-  const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
-    method: 'PATCH',
-    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-    body: JSON.stringify(body)
-  });
-  if (!r.ok) throw new Error(await r.text());
-  return true;
-}
-
-async function sbDelete(table, match) {
-  const params = Object.entries(match).map(([k,v]) => `${k}=eq.${encodeURIComponent(v)}`).join('&');
-  const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
-    method: 'DELETE',
-    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' }
-  });
-  if (!r.ok) throw new Error(await r.text());
-  return true;
-}
-
-async function sbUpsert(table, body, onConflict) {
-  const r = await fetch(`${SB_URL}/rest/v1/${table}?on_conflict=${onConflict}`, {
-    method: 'POST',
-    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates,return=minimal' },
-    body: JSON.stringify(body)
-  });
-  if (!r.ok) throw new Error(await r.text());
-  return true;
-}
+function sbGet(table, params, cb) { sbRequest('GET', table, params, null, cb); }
+function sbPost(table, body, cb) { sbRequest('POST', table, null, body, cb); }
+function sbPatch(table, params, body, cb) { sbRequest('PATCH', table, params, body, cb); }
+function sbDelete(table, params, cb) { sbRequest('DELETE', table, params, null, cb); }
 
 // ============================================================
 // STATE
 // ============================================================
-let calApt = 'archontiko', calYear = new Date().getFullYear(), calMonth = new Date().getMonth();
-let blocked = { archontiko: new Set(), thalassino: new Set() };
-let seasonal = { archontiko: [], thalassino: [] };
-const MONTHS = ['Ιανουάριος','Φεβρουάριος','Μάρτιος','Απρίλιος','Μάιος','Ιούνιος','Ιούλιος','Αύγουστος','Σεπτέμβριος','Οκτώβριος','Νοέμβριος','Δεκέμβριος'];
-const DAYS = ['Κ','Δ','Τ','Τ','Π','Π','Σ'];
+var calApt = 'archontiko', calYear = new Date().getFullYear(), calMonth = new Date().getMonth();
+var blocked = { archontiko: {}, thalassino: {} };
+var seasonal = { archontiko: [], thalassino: [] };
+var MONTHS = ['Ιανουάριος','Φεβρουάριος','Μάρτιος','Απρίλιος','Μάιος','Ιούνιος','Ιούλιος','Αύγουστος','Σεπτέμβριος','Οκτώβριος','Νοέμβριος','Δεκέμβριος'];
+var DAYS = ['Κ','Δ','Τ','Τ','Π','Π','Σ'];
 
 // ============================================================
 // AUTH
@@ -350,19 +327,19 @@ const DAYS = ['Κ','Δ','Τ','Τ','Π','Π','Σ'];
 function doLogin() {
   if (document.getElementById('admin-pwd').value === ADMIN_PWD) {
     document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('admin').classList.add('visible');
+    document.getElementById('admin').className = 'admin visible';
     initAdmin();
   } else {
-    const e = document.getElementById('login-err');
+    var e = document.getElementById('login-err');
     e.style.display = 'block';
-    setTimeout(() => e.style.display = 'none', 3000);
+    setTimeout(function(){ e.style.display = 'none'; }, 3000);
   }
 }
-document.getElementById('admin-pwd').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('admin-pwd').addEventListener('keydown', function(e) { if (e.key === 'Enter') doLogin(); });
 function doLogout() {
   if (confirm('Αποσύνδεση;')) {
     document.getElementById('login-screen').style.display = 'flex';
-    document.getElementById('admin').classList.remove('visible');
+    document.getElementById('admin').className = 'admin';
     document.getElementById('admin-pwd').value = '';
   }
 }
@@ -370,317 +347,343 @@ function doLogout() {
 // ============================================================
 // INIT
 // ============================================================
-async function initAdmin() {
-  await testConn();
-  await Promise.all([loadPrices(), loadBlocked(), loadWeather(), loadSeasonal()]);
-  renderCalendar();
-  updateStats();
+function initAdmin() {
+  testConn();
+  loadPrices();
+  loadBlocked();
+  loadWeather();
+  loadSeasonal();
 }
 
-async function testConn() {
-  const el = document.getElementById('db-status');
-  try {
-    await sbGet('prices', 'select=apartment&limit=1');
-    el.innerHTML = '<span class="db-ok">✅ Supabase συνδέθηκε επιτυχώς!</span>';
-  } catch(e) {
-    el.innerHTML = `<span class="db-err">❌ Σφάλμα: ${e.message}</span>`;
-  }
+function testConn() {
+  sbGet('prices', 'select=apartment&limit=1', function(err, data) {
+    var el = document.getElementById('db-status');
+    if (err) { el.innerHTML = '<span class="db-err">❌ ' + err.message + '</span>'; }
+    else { el.innerHTML = '<span class="db-ok">✅ Supabase συνδέθηκε επιτυχώς!</span>'; }
+  });
 }
 
 // ============================================================
 // TABS
 // ============================================================
 function showTab(n) {
-  const names = ['dashboard','calendar','prices','bookings','weather'];
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', names[i] === n));
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('panel-' + n)?.classList.add('active');
-  if (n === 'calendar') renderCalendar();
-  if (n === 'bookings') loadBookings();
+  var names = ['dashboard','calendar','prices','bookings','weather'];
+  var tabs = document.querySelectorAll('.tab');
+  for (var i=0;i<tabs.length;i++) tabs[i].classList.toggle('active', names[i]===n);
+  var panels = document.querySelectorAll('.panel');
+  for (var i=0;i<panels.length;i++) panels[i].classList.remove('active');
+  var p = document.getElementById('panel-'+n);
+  if (p) p.classList.add('active');
+  if (n==='calendar') renderCalendar();
+  if (n==='bookings') loadBookings();
 }
 
 // ============================================================
 // CALENDAR
 // ============================================================
-async function loadBlocked() {
-  try {
-    const data = await sbGet('blocked_dates', 'select=apartment,blocked_date');
-    blocked = { archontiko: new Set(), thalassino: new Set() };
-    data.forEach(r => blocked[r.apartment]?.add(r.blocked_date));
-  } catch(e) { toast('❌ ' + e.message, 'error'); }
+function loadBlocked() {
+  sbGet('blocked_dates', 'select=apartment,blocked_date', function(err, data) {
+    if (err) return;
+    blocked = { archontiko: {}, thalassino: {} };
+    for (var i=0;i<data.length;i++) {
+      var r = data[i];
+      if (blocked[r.apartment]) blocked[r.apartment][r.blocked_date] = true;
+    }
+    renderCalendar();
+    updateStats();
+  });
 }
 
 function renderCalendar() {
-  const grid = document.getElementById('cal-grid');
-  document.getElementById('cal-month').textContent = `${MONTHS[calMonth]} ${calYear}`;
-  const first = new Date(calYear, calMonth, 1).getDay();
-  const days = new Date(calYear, calMonth + 1, 0).getDate();
-  const today = new Date();
-  const bl = blocked[calApt];
-  let h = DAYS.map(d => `<div class="cal-header">${d}</div>`).join('');
-  for (let i = 0; i < first; i++) h += `<div class="cal-day cal-day--empty"></div>`;
-  for (let d = 1; d <= days; d++) {
-    const ds = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const dd = new Date(calYear, calMonth, d);
-    const past = dd < today && dd.toDateString() !== today.toDateString();
-    const isToday = dd.toDateString() === today.toDateString();
-    let cls = 'cal-day' + (past ? ' cal-day--past' : bl.has(ds) ? ' cal-day--blocked' : ' cal-day--available') + (isToday ? ' cal-day--today' : '');
-    h += `<div class="${cls}" onclick="toggleDay('${ds}',${past})">${d}</div>`;
+  var grid = document.getElementById('cal-grid');
+  document.getElementById('cal-month').textContent = MONTHS[calMonth] + ' ' + calYear;
+  var first = new Date(calYear, calMonth, 1).getDay();
+  var days = new Date(calYear, calMonth+1, 0).getDate();
+  var today = new Date();
+  var bl = blocked[calApt] || {};
+  var h = '';
+  for (var d=0;d<DAYS.length;d++) h += '<div class="cal-header">'+DAYS[d]+'</div>';
+  for (var i=0;i<first;i++) h += '<div class="cal-day cal-day--empty"></div>';
+  for (var d=1;d<=days;d++) {
+    var ds = calYear+'-'+pad(calMonth+1)+'-'+pad(d);
+    var dd = new Date(calYear,calMonth,d);
+    var past = dd<today && dd.toDateString()!==today.toDateString();
+    var isToday = dd.toDateString()===today.toDateString();
+    var cls = 'cal-day'+(past?' cal-day--past':bl[ds]?' cal-day--blocked':' cal-day--available')+(isToday?' cal-day--today':'');
+    h += '<div class="'+cls+'" onclick="toggleDay(''+ds+'','+past+')">'+d+'</div>';
   }
   grid.innerHTML = h;
-  document.getElementById('blocked-count').textContent = `${bl.size} blocked ημέρες συνολικά`;
+  var cnt = Object.keys(bl).length;
+  document.getElementById('blocked-count').textContent = cnt + ' blocked ημέρες συνολικά';
 }
+
+function pad(n) { return n<10?'0'+n:String(n); }
 
 function toggleDay(ds, past) {
   if (past) return;
-  const bl = blocked[calApt];
-  bl.has(ds) ? bl.delete(ds) : bl.add(ds);
+  var bl = blocked[calApt];
+  if (bl[ds]) delete bl[ds]; else bl[ds] = true;
   renderCalendar();
 }
 
 function switchCalApt(apt) {
   calApt = apt;
-  document.getElementById('cal-arch-btn').classList.toggle('active', apt === 'archontiko');
-  document.getElementById('cal-thal-btn').classList.toggle('active', apt === 'thalassino');
+  document.getElementById('cal-arch-btn').classList.toggle('active', apt==='archontiko');
+  document.getElementById('cal-thal-btn').classList.toggle('active', apt==='thalassino');
   renderCalendar();
 }
-function calPrev() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar(); }
-function calNext() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar(); }
+function calPrev() { calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCalendar(); }
+function calNext() { calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCalendar(); }
 
-async function saveCalendar() {
-  toast('⏳ Αποθήκευση...', '');
-  try {
-    for (const apt of ['archontiko', 'thalassino']) {
-      await sbDelete('blocked_dates', { apartment: apt });
-      const dates = Array.from(blocked[apt]);
-      if (dates.length > 0) {
-        await sbPost('blocked_dates', dates.map(d => ({ apartment: apt, blocked_date: d })));
-      }
+function saveCalendar() {
+  toast('⏳ Αποθήκευση...','');
+  var apts = ['archontiko','thalassino'];
+  var done = 0;
+  var errors = [];
+  
+  function next(i) {
+    if (i >= apts.length) {
+      if (errors.length) { toast('❌ '+errors[0],'error'); }
+      else { updateStats(); toast('✅ Ημερολόγιο αποθηκεύτηκε!','success'); }
+      return;
     }
-    updateStats();
-    toast('✅ Ημερολόγιο αποθηκεύτηκε!', 'success');
-  } catch(e) { toast('❌ ' + e.message, 'error'); }
+    var apt = apts[i];
+    sbDelete('blocked_dates', 'apartment=eq.'+apt, function(err) {
+      if (err) { errors.push(err.message); next(i+1); return; }
+      var dates = Object.keys(blocked[apt]);
+      if (dates.length === 0) { next(i+1); return; }
+      var rows = dates.map(function(d){ return {apartment:apt, blocked_date:d}; });
+      sbPost('blocked_dates', rows, function(err2) {
+        if (err2) errors.push(err2.message);
+        next(i+1);
+      });
+    });
+  }
+  next(0);
 }
 
 function clearMonth() {
-  if (!confirm('Καθαρισμός όλων;')) return;
-  const prefix = `${calYear}-${String(calMonth+1).padStart(2,'0')}-`;
-  const bl = blocked[calApt];
-  for (const d of [...bl]) { if (d.startsWith(prefix)) bl.delete(d); }
+  if (!confirm('Καθαρισμός;')) return;
+  var prefix = calYear+'-'+pad(calMonth+1)+'-';
+  var bl = blocked[calApt];
+  var keys = Object.keys(bl);
+  for (var i=0;i<keys.length;i++) { if (keys[i].indexOf(prefix)===0) delete bl[keys[i]]; }
   renderCalendar();
 }
 
 // ============================================================
 // PRICES
 // ============================================================
-async function loadPrices() {
-  try {
-    const data = await sbGet('prices', 'select=*');
-    data.forEach(r => {
-      if (r.apartment === 'archontiko') {
+function loadPrices() {
+  sbGet('prices', 'select=*', function(err, data) {
+    if (err) return;
+    for (var i=0;i<data.length;i++) {
+      var r = data[i];
+      if (r.apartment==='archontiko') {
         document.getElementById('arch-price').value = r.base_price;
-        document.getElementById('arch-disp').textContent = `€${r.base_price}`;
+        document.getElementById('arch-disp').textContent = '€'+r.base_price;
       }
-      if (r.apartment === 'thalassino') {
+      if (r.apartment==='thalassino') {
         document.getElementById('thal-price').value = r.base_price;
-        document.getElementById('thal-disp').textContent = `€${r.base_price}`;
+        document.getElementById('thal-disp').textContent = '€'+r.base_price;
       }
-    });
-  } catch(e) { console.error(e); }
-}
-
-async function savePrices() {
-  const archVal = +document.getElementById('arch-price').value;
-  const thalVal = +document.getElementById('thal-price').value;
-  toast('⏳ Αποθήκευση ' + archVal + '/' + thalVal + '...', '');
-  try {
-    // Update archontiko
-    const r1 = await fetch(`${SB_URL}/rest/v1/prices?apartment=eq.archontiko`, {
-      method: 'PATCH',
-      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ base_price: archVal })
-    });
-    if (!r1.ok) throw new Error('Arch: ' + await r1.text());
-
-    // Update thalassino
-    const r2 = await fetch(`${SB_URL}/rest/v1/prices?apartment=eq.thalassino`, {
-      method: 'PATCH',
-      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ base_price: thalVal })
-    });
-    if (!r2.ok) throw new Error('Thal: ' + await r2.text());
-
+    }
     updateStats();
-    toast('✅ Τιμές αποθηκεύτηκαν!', 'success');
-  } catch(e) { toast('❌ ' + e.message, 'error'); }
+  });
 }
 
-async function loadSeasonal() {
-  try {
-    const data = await sbGet('seasonal_prices', 'select=*&order=date_from.asc');
+function savePrices() {
+  var archVal = parseFloat(document.getElementById('arch-price').value);
+  var thalVal = parseFloat(document.getElementById('thal-price').value);
+  toast('⏳ Αποθήκευση €'+archVal+'/€'+thalVal+'...','');
+  
+  sbPatch('prices', 'apartment=eq.archontiko', {base_price: archVal}, function(err) {
+    if (err) { toast('❌ '+err.message,'error'); return; }
+    sbPatch('prices', 'apartment=eq.thalassino', {base_price: thalVal}, function(err2) {
+      if (err2) { toast('❌ '+err2.message,'error'); return; }
+      updateStats();
+      toast('✅ Τιμές αποθηκεύτηκαν!','success');
+    });
+  });
+}
+
+function loadSeasonal() {
+  sbGet('seasonal_prices', 'select=*&order=date_from.asc', function(err, data) {
+    if (err) return;
     seasonal = { archontiko: [], thalassino: [] };
-    data.forEach(r => seasonal[r.apartment]?.push(r));
+    for (var i=0;i<data.length;i++) {
+      var r = data[i];
+      if (seasonal[r.apartment]) seasonal[r.apartment].push(r);
+    }
     renderSeasonal('archontiko');
     renderSeasonal('thalassino');
-  } catch(e) { console.error(e); }
+  });
 }
 
 function renderSeasonal(apt) {
-  const c = document.getElementById('seas-' + apt);
-  const items = seasonal[apt];
+  var c = document.getElementById('seas-'+apt);
+  var items = seasonal[apt];
   if (!items.length) { c.innerHTML = '<div class="empty-state">Δεν υπάρχουν εποχικές τιμές</div>'; return; }
-  c.innerHTML = items.map((s,i) => `
-    <div class="seasonal-row">
-      <div><span class="seasonal-label">Από</span><input type="date" class="seasonal-input" value="${s.date_from}" onchange="seasonal['${apt}'][${i}].date_from=this.value"></div>
-      <div><span class="seasonal-label">Έως</span><input type="date" class="seasonal-input" value="${s.date_to}" onchange="seasonal['${apt}'][${i}].date_to=this.value"></div>
-      <div><span class="seasonal-label">€</span><input type="number" class="seasonal-input" value="${s.price}" onchange="seasonal['${apt}'][${i}].price=+this.value"></div>
-      <div style="padding-top:1.2rem"><button class="btn btn--danger btn--sm" onclick="delSeasonal('${apt}',${i},'${s.id||''}')">✕</button></div>
-    </div>`).join('');
+  var h = '';
+  for (var i=0;i<items.length;i++) {
+    var s = items[i];
+    h += '<div class="seasonal-row">'
+      +'<div><span class="seasonal-label">Από</span><input type="date" class="seasonal-input" value="'+s.date_from+'" data-apt="'+apt+'" data-idx="'+i+'" data-field="date_from" onchange="updateSeasonal(this)"></div>'
+      +'<div><span class="seasonal-label">Έως</span><input type="date" class="seasonal-input" value="'+s.date_to+'" data-apt="'+apt+'" data-idx="'+i+'" data-field="date_to" onchange="updateSeasonal(this)"></div>'
+      +'<div><span class="seasonal-label">€</span><input type="number" class="seasonal-input" value="'+s.price+'" data-apt="'+apt+'" data-idx="'+i+'" data-field="price" onchange="updateSeasonal(this)"></div>'
+      +'<div style="padding-top:1.2rem"><button class="btn btn--danger btn--sm" onclick="delSeasonal(''+apt+'','+i+',''+s.id+'')">✕</button></div>'
+      +'</div>';
+  }
+  c.innerHTML = h;
+}
+
+function updateSeasonal(el) {
+  var apt = el.dataset.apt, idx = parseInt(el.dataset.idx), field = el.dataset.field;
+  seasonal[apt][idx][field] = field==='price' ? parseFloat(el.value) : el.value;
 }
 
 function addSeasonal(apt) {
-  seasonal[apt].push({ date_from: '', date_to: '', price: apt === 'archontiko' ? 85 : 65, id: '' });
+  seasonal[apt].push({date_from:'',date_to:'',price:apt==='archontiko'?85:65,id:''});
   renderSeasonal(apt);
 }
 
-async function delSeasonal(apt, i, id) {
-  if (id) await sbDelete('seasonal_prices', { id });
-  seasonal[apt].splice(i, 1);
-  renderSeasonal(apt);
-  toast('✅ Διαγράφηκε', 'success');
+function delSeasonal(apt, i, id) {
+  if (id) {
+    sbDelete('seasonal_prices', 'id=eq.'+id, function(err) {
+      if (err) { toast('❌ '+err.message,'error'); return; }
+      seasonal[apt].splice(i,1);
+      renderSeasonal(apt);
+      toast('✅ Διαγράφηκε','success');
+    });
+  } else {
+    seasonal[apt].splice(i,1);
+    renderSeasonal(apt);
+  }
 }
 
-async function saveSeasonal() {
-  toast('⏳ Αποθήκευση...', '');
-  try {
-    for (const apt of ['archontiko', 'thalassino']) {
-      for (const s of seasonal[apt]) {
-        if (!s.date_from || !s.date_to) continue;
-        if (s.id) {
-          await sbPatch('seasonal_prices', { id: s.id }, { date_from: s.date_from, date_to: s.date_to, price: s.price });
-        } else {
-          const r = await fetch(`${SB_URL}/rest/v1/seasonal_prices`, {
-            method: 'POST',
-            headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
-            body: JSON.stringify({ apartment: apt, date_from: s.date_from, date_to: s.date_to, price: s.price })
-          });
-          const newRow = await r.json();
-          if (newRow[0]?.id) s.id = newRow[0].id;
-        }
+function saveSeasonal() {
+  toast('⏳ Αποθήκευση...','');
+  var all = seasonal.archontiko.concat(seasonal.thalassino);
+  var pending = all.filter(function(s){ return s.date_from && s.date_to; });
+  if (!pending.length) { toast('✅ Αποθηκεύτηκε!','success'); return; }
+  var done = 0;
+  for (var i=0;i<pending.length;i++) {
+    (function(s) {
+      var apt = seasonal.archontiko.indexOf(s)>=0?'archontiko':'thalassino';
+      var body = {apartment:apt, date_from:s.date_from, date_to:s.date_to, price:s.price};
+      if (s.id) {
+        sbPatch('seasonal_prices', 'id=eq.'+s.id, body, function(err){
+          done++; if(done===pending.length) toast('✅ Εποχικές αποθηκεύτηκαν!','success');
+        });
+      } else {
+        sbPost('seasonal_prices', body, function(err){
+          done++; if(done===pending.length) toast('✅ Εποχικές αποθηκεύτηκαν!','success');
+        });
       }
-    }
-    toast('✅ Εποχικές αποθηκεύτηκαν!', 'success');
-  } catch(e) { toast('❌ ' + e.message, 'error'); }
+    })(pending[i]);
+  }
 }
 
 // ============================================================
 // BOOKINGS
 // ============================================================
-async function loadBookings() {
-  const el = document.getElementById('bk-list');
-  const cnt = document.getElementById('bk-count');
+function loadBookings() {
+  var el = document.getElementById('bk-list');
+  var cnt = document.getElementById('bk-count');
   el.innerHTML = '<div class="loading"><div class="spinner"></div>Φόρτωση...</div>';
-  try {
-    const data = await sbGet('booking_requests', 'select=*&order=created_at.desc');
-    cnt.textContent = `${data.length} αιτήματα`;
+  sbGet('booking_requests', 'select=*&order=created_at.desc', function(err, data) {
+    if (err) { el.innerHTML = '<div style="color:var(--danger);padding:1rem">❌ '+err.message+'</div>'; return; }
+    cnt.textContent = data.length+' αιτήματα';
     if (!data.length) { el.innerHTML = '<div class="empty-state">Δεν υπάρχουν αιτήματα ακόμα</div>'; return; }
-    el.innerHTML = `<div class="bookings-list">${data.map(b => `
-      <div class="booking-card">
-        <div class="booking-card__header">
-          <div><div class="booking-card__name">${b.guest_name}</div>
-          <div class="booking-card__apt">${b.apartment === 'archontiko' ? '🏛 Αρχοντικό' : '🌊 Θαλασσινό'} · ${b.guests} άτομα</div></div>
-          <span class="status-badge status-${b.status}">${b.status==='pending'?'Αναμονή':b.status==='confirmed'?'Επιβεβαιωμένο':'Απορρίφθηκε'}</span>
-        </div>
-        <div class="booking-card__dates">📅 ${b.check_in} → ${b.check_out}</div>
-        <div class="booking-card__contact">📧 ${b.guest_email}${b.guest_phone ? ' · 📞 '+b.guest_phone : ''}</div>
-        ${b.message ? `<div style="margin-top:0.5rem;font-size:0.82rem;color:var(--text-soft);font-style:italic">"${b.message}"</div>` : ''}
-        <div class="booking-card__actions">
-          <button class="btn btn--success btn--sm" onclick="updateBooking('${b.id}','confirmed')">✓ Επιβεβαίωση</button>
-          <button class="btn btn--danger btn--sm" onclick="updateBooking('${b.id}','rejected')">✕ Απόρριψη</button>
-          <a href="mailto:${b.guest_email}" class="btn btn--ghost btn--sm">📧 Email</a>
-          ${b.guest_phone ? `<a href="https://wa.me/${b.guest_phone.replace(/\D/g,'')}" class="btn btn--ghost btn--sm" target="_blank">💬 WA</a>` : ''}
-        </div>
-      </div>`).join('')}</div>`;
-  } catch(e) { el.innerHTML = `<div style="color:var(--danger);padding:1rem">❌ ${e.message}</div>`; }
+    var h = '<div class="bookings-list">';
+    for (var i=0;i<data.length;i++) {
+      var b = data[i];
+      var aptName = b.apartment==='archontiko'?'🏛 Αρχοντικό':'🌊 Θαλασσινό';
+      var statusLabel = b.status==='pending'?'Αναμονή':b.status==='confirmed'?'Επιβεβαιωμένο':'Απορρίφθηκε';
+      h += '<div class="booking-card">'
+        +'<div class="booking-card__header"><div>'
+        +'<div class="booking-card__name">'+b.guest_name+'</div>'
+        +'<div class="booking-card__apt">'+aptName+' · '+b.guests+' άτομα</div>'
+        +'</div><span class="status-badge status-'+b.status+'">'+statusLabel+'</span></div>'
+        +'<div class="booking-card__dates">📅 '+b.check_in+' → '+b.check_out+'</div>'
+        +'<div class="booking-card__contact">📧 '+b.guest_email+(b.guest_phone?' · 📞 '+b.guest_phone:'')+'</div>'
+        +(b.message?'<div style="margin-top:0.5rem;font-size:0.82rem;color:var(--text-soft);font-style:italic">"'+b.message+'"</div>':'')
+        +'<div class="booking-card__actions">'
+        +'<button class="btn btn--success btn--sm" onclick="updateBooking(''+b.id+'','confirmed')">✓ Επιβεβαίωση</button>'
+        +'<button class="btn btn--danger btn--sm" onclick="updateBooking(''+b.id+'','rejected')">✕ Απόρριψη</button>'
+        +'<a href="mailto:'+b.guest_email+'" class="btn btn--ghost btn--sm">📧 Email</a>'
+        +(b.guest_phone?'<a href="https://wa.me/'+b.guest_phone.replace(/\D/g,'')+'" class="btn btn--ghost btn--sm" target="_blank">💬 WA</a>':'')
+        +'</div></div>';
+    }
+    h += '</div>';
+    el.innerHTML = h;
+  });
 }
 
-async function updateBooking(id, status) {
-  try {
-    await sbPatch('booking_requests', { id }, { status });
-    toast(status === 'confirmed' ? '✅ Επιβεβαιώθηκε!' : '❌ Απορρίφθηκε', status === 'confirmed' ? 'success' : 'error');
+function updateBooking(id, status) {
+  sbPatch('booking_requests', 'id=eq.'+id, {status:status}, function(err) {
+    if (err) { toast('❌ '+err.message,'error'); return; }
+    toast(status==='confirmed'?'✅ Επιβεβαιώθηκε!':'❌ Απορρίφθηκε', status==='confirmed'?'success':'error');
     loadBookings();
-  } catch(e) { toast('❌ ' + e.message, 'error'); }
+  });
 }
 
 // ============================================================
 // WEATHER & TRAVEL
 // ============================================================
-async function loadWeather() {
-  try {
-    const data = await sbGet('settings', 'select=*');
-    const m = {};
-    data.forEach(r => m[r.key] = r.value);
-    const map = { 'w-temp':'weather_temp','w-sea':'weather_sea','w-hum':'weather_humidity','w-wind':'weather_wind','w-el':'weather_desc_el','w-en':'weather_desc_en','w-de':'weather_desc_de','w-fr':'weather_desc_fr','t-volos':'travel_volos_duration','t-anch':'travel_anchialos_duration' };
-    for (const [id, key] of Object.entries(map)) { if (m[key]) document.getElementById(id).value = m[key]; }
-  } catch(e) { console.error(e); }
+function loadWeather() {
+  sbGet('settings', 'select=*', function(err, data) {
+    if (err) return;
+    var m = {};
+    for (var i=0;i<data.length;i++) m[data[i].key] = data[i].value;
+    var map = {'w-temp':'weather_temp','w-sea':'weather_sea','w-hum':'weather_humidity','w-wind':'weather_wind','w-el':'weather_desc_el','w-en':'weather_desc_en','w-de':'weather_desc_de','w-fr':'weather_desc_fr','t-volos':'travel_volos_duration','t-anch':'travel_anchialos_duration'};
+    for (var id in map) { if (m[map[id]]) document.getElementById(id).value = m[map[id]]; }
+  });
 }
 
-async function saveWeather() {
-  toast('⏳ Αποθήκευση...', '');
-  try {
-    await sbUpsert('settings', [
-      { key:'weather_temp', value: document.getElementById('w-temp').value },
-      { key:'weather_sea', value: document.getElementById('w-sea').value },
-      { key:'weather_humidity', value: document.getElementById('w-hum').value },
-      { key:'weather_wind', value: document.getElementById('w-wind').value },
-      { key:'weather_desc_el', value: document.getElementById('w-el').value },
-      { key:'weather_desc_en', value: document.getElementById('w-en').value },
-      { key:'weather_desc_de', value: document.getElementById('w-de').value },
-      { key:'weather_desc_fr', value: document.getElementById('w-fr').value },
-    ], 'key');
-    toast('✅ Καιρός αποθηκεύτηκε!', 'success');
-  } catch(e) { toast('❌ ' + e.message, 'error'); }
+function saveWeather() {
+  toast('⏳ Αποθήκευση...','');
+  var keys = ['weather_temp','weather_sea','weather_humidity','weather_wind','weather_desc_el','weather_desc_en','weather_desc_de','weather_desc_fr'];
+  var ids =  ['w-temp','w-sea','w-hum','w-wind','w-el','w-en','w-de','w-fr'];
+  var done = 0;
+  for (var i=0;i<keys.length;i++) {
+    (function(key, id) {
+      var val = document.getElementById(id).value;
+      sbPatch('settings', 'key=eq.'+key, {value:val}, function(err){
+        done++;
+        if (done===keys.length) toast('✅ Καιρός αποθηκεύτηκε!','success');
+      });
+    })(keys[i], ids[i]);
+  }
 }
 
-async function saveTravel() {
-  toast('⏳ Αποθήκευση...', '');
-  try {
-    await sbUpsert('settings', [
-      { key:'travel_volos_duration', value: document.getElementById('t-volos').value },
-      { key:'travel_anchialos_duration', value: document.getElementById('t-anch').value },
-    ], 'key');
-    toast('✅ Αποθηκεύτηκε!', 'success');
-  } catch(e) { toast('❌ ' + e.message, 'error'); }
+function saveTravel() {
+  toast('⏳ Αποθήκευση...','');
+  sbPatch('settings', 'key=eq.travel_volos_duration', {value:document.getElementById('t-volos').value}, function(err){
+    sbPatch('settings', 'key=eq.travel_anchialos_duration', {value:document.getElementById('t-anch').value}, function(err2){
+      toast('✅ Αποθηκεύτηκε!','success');
+    });
+  });
 }
 
 // ============================================================
 // HELPERS
 // ============================================================
 function updateStats() {
-  document.getElementById('s-arch').textContent = blocked.archontiko.size;
-  document.getElementById('s-thal').textContent = blocked.thalassino.size;
-  document.getElementById('s-ap').textContent = '€' + document.getElementById('arch-price').value;
-  document.getElementById('s-tp').textContent = '€' + document.getElementById('thal-price').value;
+  document.getElementById('s-arch').textContent = Object.keys(blocked.archontiko).length;
+  document.getElementById('s-thal').textContent = Object.keys(blocked.thalassino).length;
+  document.getElementById('s-ap').textContent = '€'+document.getElementById('arch-price').value;
+  document.getElementById('s-tp').textContent = '€'+document.getElementById('thal-price').value;
 }
 
-document.addEventListener("DOMContentLoaded",function(){var btn=document.getElementById("save-prices-btn");if(btn){btn.addEventListener("touchend",function(e){e.preventDefault();savePrices();});btn.addEventListener("click",savePrices);}});
-function toast(msg, type = '') {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.className = `toast ${type}`; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+function toast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast'+(type?' '+type:'');
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2500);
 }
-</script>
-<script>
-// iOS-safe event binding — runs after all functions are defined
-window.addEventListener('load', function() {
-  function bindBtn(id, fn) {
-    var el = document.getElementById(id);
-    if (!el) return;
-    el.addEventListener('touchend', function(e) { e.preventDefault(); fn(); });
-    el.addEventListener('click', fn);
-  }
-  bindBtn('save-prices-btn', savePrices);
-});
+
 </script>
 </body>
 </html>
